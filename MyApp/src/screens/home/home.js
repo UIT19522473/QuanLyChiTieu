@@ -33,10 +33,7 @@ export default function Home({navigation}) {
         <Text style={{color: 'white'}}>Cập Nhật</Text>
       </TouchableOpacity>
       <Text>{info.email}</Text>
-      <Button
-        title="Go to Details"
-        onPress={() => navigation.navigate('DetailScreen')}
-      />
+      <Button title="Go to Test" onPress={() => navigation.navigate('Test')} />
     </View>
   );
 }

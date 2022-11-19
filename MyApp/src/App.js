@@ -11,7 +11,6 @@ import HanMuc from './screens/HanMuc/HanMuc';
 import Test from './screens/Test/Test';
 
 import firestore from '@react-native-firebase/firestore';
-import TestScreen from './screens/testScreen/TestScreen';
 import TongQuan from './screens/TongQuan/TongQuan';
 
 const HomeStack = createNativeStackNavigator();

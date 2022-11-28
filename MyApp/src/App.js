@@ -13,6 +13,8 @@ import Test from './screens/Test/Test';
 import firestore from '@react-native-firebase/firestore';
 import TongQuan from './screens/TongQuan/TongQuan';
 
+import {TailwindProvider} from 'tailwindcss-react-native';
+
 const HomeStack = createNativeStackNavigator();
 
 function HomeStackScreen() {
@@ -96,16 +98,18 @@ function App() {
   //   });
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <Tab.Navigator screenOptions={{headerShown: false}}>
-          <Tab.Screen name="TrangChu" component={HomeStackScreen} />
-          <Tab.Screen name="TongQuan" component={TongQuanStackScreen} />
-          <Tab.Screen name="LichSu" component={LichSuStackScreen} />
-          <Tab.Screen name="HanMuc" component={HanMuctackScreen} />
-          {/* <Tab.Screen name="Settings" component={SettingsStackScreen} />
+      <TailwindProvider>
+        <NavigationContainer>
+          <Tab.Navigator screenOptions={{headerShown: false}}>
+            <Tab.Screen name="TrangChu" component={HomeStackScreen} />
+            <Tab.Screen name="TongQuan" component={TongQuanStackScreen} />
+            <Tab.Screen name="LichSu" component={LichSuStackScreen} />
+            <Tab.Screen name="HanMuc" component={HanMuctackScreen} />
+            {/* <Tab.Screen name="Settings" component={SettingsStackScreen} />
           <Tab.Screen name="Test" component={TestStacksScreen} /> */}
-        </Tab.Navigator>
-      </NavigationContainer>
+          </Tab.Navigator>
+        </NavigationContainer>
+      </TailwindProvider>
     </Provider>
   );
 }

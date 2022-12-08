@@ -1,13 +1,14 @@
-import {View, Text, StyleSheet, Button} from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import * as React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { NavigationContainer, useNavigation, CommonActions } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './screens/home/home';
-import {Provider} from 'react-redux';
-import {store} from './redux/store';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
 import LichSu from './screens/LichSu/LichSu';
 import HanMuc from './screens/HanMuc/HanMuc';
+import ThemHanMuc from './screens/HanMuc/ThemHanMuc';
 import Test from './screens/Test/Test';
 
 import firestore from '@react-native-firebase/firestore';
@@ -24,12 +25,55 @@ function HomeStackScreen() {
   );
 }
 
+
+
+
+
+const ThemHanMucStack= createNativeStackNavigator();
+function ThemHanMucStackScreen() {
+  return (
+    <ThemHanMucStack.Navigator>
+      <ThemHanMucStack.Screen name="ThemHanMuc" component={ThemHanMuc} options={
+        {
+          
+          headerTitle: 'Them Han Muc',
+          headerBackTitle: 'Back',
+          headerTitleStyle: {
+            color: 'black',
+            fontSize: 20
+          },
+          headerLeft: () => (
+            <Button title='Back'/>
+            )
+          }
+        } />
+      {/* <HomeStack.Screen name="DetailScreen" component={Detail} /> */}
+    </ThemHanMucStack.Navigator>
+  );
+}
+
 const HanMucStack = createNativeStackNavigator();
 
 function HanMuctackScreen() {
+  const navigation = useNavigation()
   return (
     <HanMucStack.Navigator>
-      <HanMucStack.Screen name="HomeStack" component={HanMuc} />
+      <HanMucStack.Screen name="HomeStack" component={HanMuc} options={
+        {
+
+          headerTitle: 'Han Muc',
+          headerBackTitle: 'Back',
+          headerTitleStyle: {
+            color: 'black',
+            fontSize: 20
+          },
+          headerRight: () => (
+            <Button title='Add' onPress={() => {
+              navigation.dispatch(CommonActions.navigate('ThemHanMuc'));
+            }} />
+          )
+        }
+      } />
       {/* <HomeStack.Screen name="DetailScreen" component={Detail} /> */}
     </HanMucStack.Navigator>
   );
@@ -97,11 +141,12 @@ function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Tab.Navigator screenOptions={{headerShown: false}}>
+        <Tab.Navigator screenOptions={{ headerShown: false }}>
           <Tab.Screen name="TrangChu" component={HomeStackScreen} />
           <Tab.Screen name="TongQuan" component={TongQuanStackScreen} />
           <Tab.Screen name="LichSu" component={LichSuStackScreen} />
           <Tab.Screen name="HanMuc" component={HanMuctackScreen} />
+          <Tab.Screen name="ThemHanMuc" component={ThemHanMucStackScreen} />
           {/* <Tab.Screen name="Settings" component={SettingsStackScreen} />
           <Tab.Screen name="Test" component={TestStacksScreen} /> */}
         </Tab.Navigator>

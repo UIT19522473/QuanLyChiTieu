@@ -1,6 +1,10 @@
 import {View, Text, StyleSheet, Button} from 'react-native';
 import * as React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import {
+  NavigationContainer,
+  useNavigation,
+  CommonActions,
+} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from './screens/home/home';
@@ -8,6 +12,7 @@ import {Provider} from 'react-redux';
 import {store} from './redux/store';
 import LichSu from './screens/LichSu/LichSu';
 import HanMuc from './screens/HanMuc/HanMuc';
+import ThemHanMuc from './screens/HanMuc/ThemHanMuc';
 import Test from './screens/Test/Test';
 import SignIn from './screens/sign_in/sign_in';
 
@@ -38,12 +43,54 @@ function HomeStackScreen() {
   );
 }
 
+const ThemHanMucStack = createNativeStackNavigator();
+function ThemHanMucStackScreen() {
+  return (
+    <ThemHanMucStack.Navigator>
+      <ThemHanMucStack.Screen
+        name="ThemHanMuc"
+        component={ThemHanMuc}
+        options={{
+          headerTitle: 'Them Han Muc',
+          headerBackTitle: 'Back',
+          headerTitleStyle: {
+            color: 'black',
+            fontSize: 20,
+          },
+          headerLeft: () => <Button title="Back" />,
+        }}
+      />
+      {/* <HomeStack.Screen name="DetailScreen" component={Detail} /> */}
+    </ThemHanMucStack.Navigator>
+  );
+}
+
 const HanMucStack = createNativeStackNavigator();
 
 function HanMuctackScreen() {
+  const navigation = useNavigation();
   return (
-    <HanMucStack.Navigator screenOptions={{headerShown: false}}>
-      <HanMucStack.Screen name="HomeStack" component={HanMuc} />
+    <HanMucStack.Navigator>
+      <HanMucStack.Screen
+        name="HomeStack"
+        component={HanMuc}
+        options={{
+          headerTitle: 'Han Muc',
+          headerBackTitle: 'Back',
+          headerTitleStyle: {
+            color: 'black',
+            fontSize: 20,
+          },
+          headerRight: () => (
+            <Button
+              title="Add"
+              onPress={() => {
+                navigation.dispatch(CommonActions.navigate('ThemHanMuc'));
+              }}
+            />
+          ),
+        }}
+      />
       {/* <HomeStack.Screen name="DetailScreen" component={Detail} /> */}
     </HanMucStack.Navigator>
   );
@@ -116,6 +163,7 @@ function App() {
             <Tab.Screen name="TongQuan" component={TongQuanStackScreen} />
             <Tab.Screen name="LichSu" component={LichSuStackScreen} />
             <Tab.Screen name="HanMuc" component={HanMuctackScreen} />
+            <Tab.Screen name="ThemHanMuc" component={ThemHanMucStackScreen} />
           </Tab.Navigator>
         </NavigationContainer>
       </TailwindProvider>

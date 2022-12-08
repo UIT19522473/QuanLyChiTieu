@@ -14,13 +14,19 @@ import firestore from '@react-native-firebase/firestore';
 import TongQuan from './screens/TongQuan/TongQuan';
 
 import {TailwindProvider} from 'tailwindcss-react-native';
+import HomeTabs from './components/HomeTabs/HomeTabs';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import AddItemHome from './screens/AddItemHome/addItemHome';
+import Notify from './screens/Notify/Notify';
 
 const HomeStack = createNativeStackNavigator();
 
 function HomeStackScreen() {
   return (
-    <HomeStack.Navigator>
+    <HomeStack.Navigator screenOptions={{headerShown: false}}>
       <HomeStack.Screen name="HomeStack" component={Home} />
+      {/* <HomeStack.Screen name="AddItemHomeStack" component={AddItemHome} /> */}
+      <HomeStack.Screen name="NotifyStack" component={Notify} />
       <HomeStack.Screen name="Test" component={Test} />
     </HomeStack.Navigator>
   );
@@ -30,7 +36,7 @@ const HanMucStack = createNativeStackNavigator();
 
 function HanMuctackScreen() {
   return (
-    <HanMucStack.Navigator>
+    <HanMucStack.Navigator screenOptions={{headerShown: false}}>
       <HanMucStack.Screen name="HomeStack" component={HanMuc} />
       {/* <HomeStack.Screen name="DetailScreen" component={Detail} /> */}
     </HanMucStack.Navigator>
@@ -41,7 +47,7 @@ const LichSuStack = createNativeStackNavigator();
 
 function LichSuStackScreen() {
   return (
-    <LichSuStack.Navigator>
+    <LichSuStack.Navigator screenOptions={{headerShown: false}}>
       <LichSuStack.Screen name="LichSuStack" component={LichSu} />
       {/* <HomeStack.Screen name="DetailScreen" component={Detail} /> */}
     </LichSuStack.Navigator>
@@ -52,7 +58,7 @@ const TongQuanStack = createNativeStackNavigator();
 
 function TongQuanStackScreen() {
   return (
-    <TongQuanStack.Navigator>
+    <TongQuanStack.Navigator screenOptions={{headerShown: false}}>
       <TongQuanStack.Screen name="LichSuStack" component={TongQuan} />
       {/* <HomeStack.Screen name="DetailScreen" component={Detail} /> */}
     </TongQuanStack.Navigator>
@@ -105,8 +111,6 @@ function App() {
             <Tab.Screen name="TongQuan" component={TongQuanStackScreen} />
             <Tab.Screen name="LichSu" component={LichSuStackScreen} />
             <Tab.Screen name="HanMuc" component={HanMuctackScreen} />
-            {/* <Tab.Screen name="Settings" component={SettingsStackScreen} />
-          <Tab.Screen name="Test" component={TestStacksScreen} /> */}
           </Tab.Navigator>
         </NavigationContainer>
       </TailwindProvider>

@@ -34,6 +34,7 @@ export default function Home({navigation}) {
       </TouchableOpacity>
       <Text>{info.email}</Text>
       <Button title="Go to Test" onPress={() => navigation.navigate('Test')} />
+      <Button title='Đăng xuat khỏi trái đất' onPress={() => navigation.navigate('SignIn')} />
     </View>
   );
 }

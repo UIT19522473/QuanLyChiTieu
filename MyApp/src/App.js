@@ -9,6 +9,7 @@ import {store} from './redux/store';
 import LichSu from './screens/LichSu/LichSu';
 import HanMuc from './screens/HanMuc/HanMuc';
 import Test from './screens/Test/Test';
+import SignIn from './screens/sign_in/sign_in';
 
 import firestore from '@react-native-firebase/firestore';
 import TongQuan from './screens/TongQuan/TongQuan';
@@ -20,6 +21,7 @@ function HomeStackScreen() {
     <HomeStack.Navigator>
       <HomeStack.Screen name="HomeStack" component={Home} />
       <HomeStack.Screen name="Test" component={Test} />
+      <HomeStack.Screen name="SignIn" component={SignIn} options={{headerShown: false}} />
     </HomeStack.Navigator>
   );
 }
@@ -51,8 +53,7 @@ const TongQuanStack = createNativeStackNavigator();
 function TongQuanStackScreen() {
   return (
     <TongQuanStack.Navigator>
-      <TongQuanStack.Screen name="LichSuStack" component={TongQuan} />
-      {/* <HomeStack.Screen name="DetailScreen" component={Detail} /> */}
+      <TongQuanStack.Screen name="Tổng quan" component={TongQuan} />
     </TongQuanStack.Navigator>
   );
 }

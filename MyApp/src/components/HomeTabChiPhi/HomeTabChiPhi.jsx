@@ -6,7 +6,7 @@ import {dataThuChi} from '../../data/dataHome';
 import {CalculatorInput} from 'react-native-calculator';
 import {useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-const HomeTabThuNhap = props => {
+const HomeTabChiPhi = props => {
   const [value, setValue] = useState(0);
   let itemArr = useSelector(state => state.itemHomeArr.arrItem);
   let moneyIn = 0;
@@ -16,7 +16,7 @@ const HomeTabThuNhap = props => {
   );
 
   itemArr = itemArr.filter(function (item) {
-    return item.type === 'thu';
+    return item.type === 'chi';
   });
   // console.log(itemArr);
 
@@ -42,8 +42,8 @@ const HomeTabThuNhap = props => {
   // }
   return (
     <ScrollView className="flex-1 ">
-      <View className="flex-1 flex gap-6 items-center ">
-        <View className="flex flex-row justify-center w-full ">
+      {/* <View className="flex-1 flex gap-6 items-center "> */}
+      {/* <View className="flex flex-row justify-center w-full ">
           {itemArr.map((item, index) =>
             index < 4 ? (
               <HomeItem
@@ -60,11 +60,11 @@ const HomeTabThuNhap = props => {
               <></>
             ),
           )}
-        </View>
+        </View> */}
 
-        <View className="flex flex-row items-center w-full">
+      {/* <View className="flex flex-row items-center w-full">
           <View className="flex flex-col flex-1">
-            {/* {count <= 3 ? <HomeItem hide={false} /> : <></>} */}
+       
             {itemArr.map((item, index) =>
               index >= 4 && index < 6 ? (
                 <HomeItem
@@ -81,9 +81,9 @@ const HomeTabThuNhap = props => {
                 <></>
               ),
             )}
-          </View>
+          </View> */}
 
-          <View className="flex justify-center items-center  flex-1 mx-8">
+      {/* <View className="flex justify-center items-center  flex-1 mx-8">
             <Pie
               radius={95}
               innerRadius={85}
@@ -108,18 +108,18 @@ const HomeTabThuNhap = props => {
             />
             <View style={styles.gauge}>
               <Text className="text-base font-semibold text-slate-90">
-                Thu nhập
+                Chi phí
               </Text>
-              <Text className="text-2xl font-semibold text-green-600">
-                {moneyIn} đ
-              </Text>
-              <Text className="text-base font-semibold text-rose-600">
+              <Text className="text-2xl font-semibold text-rose-600">
                 {moneyOut} đ
               </Text>
+              <Text className="text-base font-semibold text-green-600">
+                {moneyIn} đ
+              </Text>
             </View>
-          </View>
+          </View> */}
 
-          <View className="flex flex-col flex-1">
+      {/* <View className="flex flex-col flex-1">
             {itemArr.map((item, index) =>
               index >= 6 && index < 8 ? (
                 <HomeItem
@@ -136,8 +136,8 @@ const HomeTabThuNhap = props => {
               ),
             )}
           </View>
-        </View>
-        <View className="flex-row overflow-scroll flex flex-wrap justify-center">
+        </View> */}
+      {/* <View className="flex-row overflow-scroll flex flex-wrap justify-center">
           {itemArr.map((item, index) =>
             index >= 7 ? (
               <HomeItem
@@ -154,13 +154,56 @@ const HomeTabThuNhap = props => {
               <></>
             ),
           )}
+        </View> */}
+
+      {/* doughnut chart */}
+
+      {/* </View> */}
+      <View>
+        <View className="flex mx-4 mt-4 flex-row items-center">
+          <Pie
+            radius={80}
+            innerRadius={60}
+            sections={
+              //   [
+              //   {
+              //     percentage: 60,
+              //     color: '#f00',
+              //   },
+              //   {
+              //     percentage: 10,
+              //     color: 'green',
+              //   },
+              //   {
+              //     percentage: 10,
+              //     color: 'blue',
+              //   },
+              // ]
+              dataPie
+            }
+            backgroundColor="#aab1bd"
+          />
+          <View className="">
+            <Text className="text-base font-semibold text-slate-90">
+              Chi phí
+            </Text>
+            <Text className="text-2xl font-semibold text-rose-600">
+              {moneyOut} đ
+            </Text>
+            <Text className="text-base font-semibold text-slate-90">
+              Thu nhập
+            </Text>
+            <Text className="text-base font-semibold text-green-600">
+              {moneyIn} đ
+            </Text>
+          </View>
         </View>
       </View>
     </ScrollView>
   );
 };
 
-export default HomeTabThuNhap;
+export default HomeTabChiPhi;
 
 const styles = StyleSheet.create({
   container: {alignItems: 'center', justifyContent: 'center', height: 1050},

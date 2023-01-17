@@ -10,9 +10,9 @@ const NotifyItem = ({title, des}) => {
       }}
       className="my-2 w-full h-20 flex flex-row items-center bg-green-100 border-l-8 border-green-700 p-2">
       {/* <View className="w-2 bg-red-400 h-full" /> */}
-      <View className="mx-2">{<NotifyIcon title={title} />}</View>
+      <View className="mx-2"> {<NotifyIcon title={title} />}</View>
       <View className="flex-1 ml-2">
-        <Text className="text-xl font-bold">{title}</Text>
+        <Text className="text-xl font-bold"> {title} </Text>
         <Text className="text-base break-words pr-4">
           Bạn đã vượt quá hạn mức tháng này rồi, hãy kiểm tra hạn mức
         </Text>
@@ -80,10 +80,8 @@ const NotifyIcon = ({title}) => {
 const Notify = () => {
   return (
     <View>
-      <NotifyItem title={'success'} />
-      <NotifyItem title={'error'} />
-      <NotifyItem title={'warning'} />
-      <NotifyItem title={'info'} />
+      <NotifyItem title={'success'} /> <NotifyItem title={'error'} />
+      <NotifyItem title={'warning'} /> <NotifyItem title={'info'} />
     </View>
   );
 };

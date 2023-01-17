@@ -6,7 +6,7 @@ import HomeTabThuNhap from '../../components/HomeTabThuNhap/HomeTabThuNhap';
 
 const TabTop = createMaterialTopTabNavigator();
 
-const TabHome = ({navigate}) => {
+const TabHome = (props, {navigate}) => {
   return (
     <TabTop.Navigator
       initialRouteName="Feed"
@@ -31,17 +31,3 @@ const TabHome = ({navigate}) => {
   );
 };
 export default TabHome;
-// const Demo = () => {
-//   return (
-//     <View style={{backgroundColor: 'black', flex: 1}}>
-//       <Text>Hello</Text>
-//       <Text>Hello</Text>
-//       <Text>Hello</Text>
-//       <Text>Hello</Text>
-//       <Text>Hello</Text>
-//       <Text>Hello</Text>
-//       <Text>Hello</Text>
-//       <MyTabs />
-//     </View>
-//   );
-// };

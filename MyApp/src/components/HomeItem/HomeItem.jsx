@@ -44,13 +44,13 @@ const HomeItem = props => {
         <View style={{backgroundColor: color}} className="p-3 rounded-full">
           <Icon size={22} name={icon} color={'white'} />
         </View>
-        <View className="flex-row justify-center">
+        <View className="flex-row justify-center items-center mt-[1px]">
           <Text
             numberOfLines={1}
-            className="font-bold text-primary text-xs mt-[1px] max-w-[140px">
+            className="font-bold text-primary text-xs max-w-[140px">
             {value}
           </Text>
-          <Text className="font-bold text-primary"> đ</Text>
+          <Text className="font-bold marker:text-xs text-primary"> đ</Text>
         </View>
       </View>
     );

@@ -682,12 +682,12 @@ const Home = ({navigation}) => {
         <Text>Sign Out</Text>
       </TouchableOpacity> */}
 
-      <TouchableOpacity
+      {/* <TouchableOpacity
         className="bg-black"
         // onPress={() => navigation.navigate('LichSu', { screen: 'LichSuStack' })}>
         onPress={handleNavigateEdit}>
         <Text>Click</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </SafeAreaView>
   );
 };

@@ -33,7 +33,6 @@ import {
 } from '../../redux/slice/dataAllSlice/dataAllSlice';
 
 import auth from '@react-native-firebase/auth';
-import PushNotification from 'react-native-push-notification';
 
 onFacebookSignIn = () => {
   console.warn('Facebook');
@@ -66,13 +65,6 @@ const SignIn = ({navigation}) => {
       await sleep(i * 1000);
     }
     signInMain();
-  };
-
-  const createChannels = () => {
-    PushNotification.createChannel({
-      channelId: 'test-channel',
-      channelName: 'Test Channel',
-    });
   };
 
   const loadAllDataByUser = userName => {

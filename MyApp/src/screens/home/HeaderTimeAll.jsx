@@ -557,7 +557,8 @@ const HeaderTimeAll = ({navigation}) => {
   return (
     <View className="w-full">
       <View className="flex flex-row justify-between py-2 px-1 bg-primary">
-        <Icon size={24} color={'white'} name="menu" />
+        {/* <Icon size={24} color={'white'} name="menu" /> */}
+        <View></View>
         <View className="flex justify-center items-center gap-1">
           <Text className="text-lg text-slate-100">Xin chào: {userName}</Text>
           {/* <Text className="text-lg text-slate-100"> Số dư của bạn </Text>

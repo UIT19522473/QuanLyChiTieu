@@ -8,8 +8,11 @@ buildscript {
         //------
         buildToolsVersion = "31.0.0"
         minSdkVersion = 21
-        compileSdkVersion = 31
-        targetSdkVersion = 31
+        // compileSdkVersion = 31
+        // targetSdkVersion = 31
+
+        compileSdkVersion = 33
+        targetSdkVersion = 33
 
         if (System.properties['os.arch'] == "aarch64") {
             // For M1 Users we need to use the NDK 24 which added support for aarch64
@@ -53,5 +56,8 @@ allprojects {
         }
         google()
         maven { url 'https://www.jitpack.io' }
+
+        // notifee
+        maven {url "../node_modules/@notifee/react-native/android/libs"}
     }
 }

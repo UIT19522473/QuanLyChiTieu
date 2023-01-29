@@ -40,6 +40,8 @@ import SignUp from './screens/sign_up/sign_up';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import HeaderTimeAll from './screens/home/HeaderTimeAll';
 
+import TienIch from './screens/TienIch/TienIch';
+
 const HomeStack = createNativeStackNavigator();
 
 function HomeStackScreen() {
@@ -60,6 +62,17 @@ function HomeStackScreen() {
 
       <HomeStack.Screen name="HomeItem" component={HomeItem} />
     </HomeStack.Navigator>
+  );
+}
+const TienIchStack = createBottomTabNavigator();
+
+function TienIchStackScreen() {
+  return (
+    <TienIchStack.Navigator
+      screenOptions={{headerShown: false, tabBarStyle: {display: 'none'}}}>
+      <TienIchStack.Screen name="TienIchHome" component={TienIch} />
+      <TienIchStack.Screen name="HanMuc" component={HanMuc} />
+    </TienIchStack.Navigator>
   );
 }
 
@@ -268,7 +281,7 @@ function App() {
                   name="LichSu"
                   component={LichSuStackScreen}
                 />
-                <Tab.Screen
+                {/* <Tab.Screen
                   options={{
                     tabBarLabel: 'Hạn mức',
                     tabBarIcon: ({focused}) => (
@@ -281,7 +294,24 @@ function App() {
                   }}
                   name="HanMuc"
                   component={HanMuctackScreen}
+                /> */}
+
+                <Tab.Screen
+                  options={{
+                    tabBarLabel: 'Tiện ích',
+                    tabBarIcon: ({focused}) => (
+                      <Icon
+                        name="extension"
+                        size={24}
+                        color={focused ? 'blue' : 'gray'}
+                      />
+                    ),
+                  }}
+                  name="TienIch"
+                  component={TienIchStackScreen}
                 />
+
+                {/* <Tab.Screen /> */}
                 {/* <Tab.Screen
                   name="ThemHanMuc"
                   component={ThemHanMucStackScreen}

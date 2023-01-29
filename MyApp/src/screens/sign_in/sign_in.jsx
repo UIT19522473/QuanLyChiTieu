@@ -122,8 +122,8 @@ const SignIn = ({navigation}) => {
       .signInWithEmailAndPassword(userName, pass)
       .then(() => {
         console.log('User account created & signed in!');
-        dispatch(logAuth(userName.split('@')[0]));
-        loadAllDataByUser(userName.split('@')[0]);
+        dispatch(logAuth(userName.split('@')[0].toUpperCase()));
+        loadAllDataByUser(userName.split('@')[0].toUpperCase());
         // signInMain();
         slepp();
       })

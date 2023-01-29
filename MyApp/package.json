@@ -10,6 +10,7 @@
         "lint": "eslint ."
     },
     "dependencies": {
+        "@notifee/react-native": "^7.4.0",
         "@react-native-community/art": "^1.2.0",
         "@react-native-community/datetimepicker": "^6.7.1",
         "@react-native-community/masked-view": "^0.1.11",
@@ -31,6 +32,7 @@
         "react-native-element-textinput": "^2.0.1",
         "react-native-floating-action": "^1.22.0",
         "react-native-fontawesome": "^7.0.0",
+        "react-native-fs": "^2.20.0",
         "react-native-gesture-handler": "^2.8.0",
         "react-native-modal": "^13.0.1",
         "react-native-pager-view": "^6.1.2",
@@ -48,7 +50,8 @@
         "redux": "^4.2.0",
         "redux-thunk": "^2.4.2",
         "tailwindcss-react-native": "^1.7.10",
-        "victory-native": "^36.6.8"
+        "victory-native": "^36.6.8",
+        "xlsx": "^0.18.5"
     },
     "devDependencies": {
         "@babel/core": "^7.12.9",

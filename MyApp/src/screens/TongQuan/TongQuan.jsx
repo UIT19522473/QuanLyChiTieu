@@ -44,9 +44,11 @@ const AnalyzeTab = () => {
 const Item = props => {};
 
 const TongQuan = () => {
-  const data = useSelector(State => State.transferItem.arr);
+  // const data = useSelector(State => State.transferItem.arr);
   // const modeTime = useSelector(State => State.currentTime.modeTime);
-  const modeTime = useSelector(State => State.dataAll);
+  const dataAll = useSelector(State => State.dataAll);
+
+  console.log(dataAll.modeTime);
 
   //console.log(data.length);
   return (
@@ -60,9 +62,21 @@ const TongQuan = () => {
         <Text>{item.time}</Text>
       ))} */}
 
-      {modeTime.modeTime == 0 ? <Day /> : <Month />}
+      {dataAll.modeTime == 0 ? (
+        <Day />
+      ) : dataAll.modeTime == 1 ? (
+        <Week pickedTime="05/01/2023" />
+      ) : dataAll.modeTime == 2 ? (
+        <Month />
+      ) : dataAll.modeTime == 3 ? (
+        <Text>Năm</Text>
+      ) : dataAll.modeTime == 4 ? (
+        <Text>Tất cả</Text>
+      ) : (
+        <></>
+      )}
       {/* {modeTime == 0 ? <Day /> : <Month />} */}
-      <Week pickedTime="05/01/2023" />
+      {/* <Week pickedTime="05/01/2023" /> */}
 
       {/* <Week /> */}
     </View>

@@ -27,6 +27,8 @@ import Notify from './screens/Notify/Notify';
 import ModalColor from './components/ModalColor/ModalColor';
 import ModalIcon from './components/ModalIcon/ModalIcon';
 import ChooseItem from './screens/ChooseItem/ChooseItem';
+import BtsHomeItem from './components/BtsHomeItem/BtsHomeItem';
+import HomeItem from './components/HomeItem/HomeItem';
 
 import {useState} from 'react';
 import {useEffect} from 'react';
@@ -36,6 +38,7 @@ import {AuthContext} from './components/context';
 import SignUp from './screens/sign_up/sign_up';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import HeaderTimeAll from './screens/home/HeaderTimeAll';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -53,6 +56,9 @@ function HomeStackScreen() {
       <HomeStack.Screen name="Test" component={Test} />
       <HomeStack.Screen name="ModalColor" component={ModalColor} />
       <HomeStack.Screen name="ChooseItemStack" component={ChooseItem} />
+      <HomeStack.Screen name="BottomSheetEdit" component={BtsHomeItem} />
+
+      <HomeStack.Screen name="HomeItem" component={HomeItem} />
     </HomeStack.Navigator>
   );
 }
@@ -205,6 +211,7 @@ function App() {
     <Provider store={store}>
       <TailwindProvider>
         <AuthContext.Provider value={authContext}>
+          {userToken != null ? <HeaderTimeAll /> : <></>}
           <NavigationContainer>
             {userToken != null ? (
               <Tab.Navigator

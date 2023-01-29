@@ -12,6 +12,7 @@ import Year from './Year';
 
 import CustomTotal from './Components/CustomTotal';
 import HeaderTime from '../home/HeaderTime';
+import HeaderTimeAll from '../home/HeaderTimeAll';
 
 import {useSelector, useDispatch} from 'react-redux';
 import {useEffect} from 'react';
@@ -44,7 +45,8 @@ const Item = props => {};
 
 const TongQuan = () => {
   const data = useSelector(State => State.transferItem.arr);
-  const modeTime = useSelector(State => State.currentTime.modeTime);
+  // const modeTime = useSelector(State => State.currentTime.modeTime);
+  const modeTime = useSelector(State => State.dataAll);
 
   //console.log(data.length);
   return (
@@ -52,12 +54,13 @@ const TongQuan = () => {
     //   <AnalyzeTab />
     // </NavigationContainer>
     <View className="flex-1">
-      <HeaderTime />
+      {/* <HeaderTime /> */}
+      {/* <HeaderTimeAll /> */}
       {/* {data.map(item => (
         <Text>{item.time}</Text>
       ))} */}
 
-      {modeTime == 0 ? <Day /> : <Month />}
+      {modeTime.modeTime == 0 ? <Day /> : <Month />}
 
       {/* <Week /> */}
     </View>

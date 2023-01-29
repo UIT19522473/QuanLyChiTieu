@@ -41,7 +41,7 @@ import {AuthContext} from '../../components/context';
 import {useContext} from 'react';
 
 import HeaderTime from './HeaderTime';
-
+import HeaderTimeAll from './HeaderTimeAll';
 const Home = ({navigation}) => {
   // const count = useSelector(state => state.counter.value);
   const dispatch = useDispatch();
@@ -52,46 +52,46 @@ const Home = ({navigation}) => {
   // console.log('item home', itemHome);
 
   //mode date ngày, tuần, tháng, năm
-  const [pressDate, setPressDate] = useState(0);
+  // const [pressDate, setPressDate] = useState(0);
 
   const [tab, setTab] = useState('DanhMuc');
-  const [date, setDate] = useState(new Date());
-  const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
-  const [text, setText] = useState(
-    // date.getDay() +
-    //   '/' +
-    date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear(),
-  );
-  dispatch(addTimeCurrentItem(text));
-  dispatch(addCurrentTime(text));
+  // const [date, setDate] = useState(new Date());
+  // const [mode, setMode] = useState('date');
+  // const [show, setShow] = useState(false);
+  // const [text, setText] = useState(
+  //   // date.getDay() +
+  //   //   '/' +
+  //   date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear(),
+  // );
+  // dispatch(addTimeCurrentItem(text));
+  // dispatch(addCurrentTime(text));
 
-  const onChange = (event, selectDate) => {
-    const currentDate = selectDate || date;
-    setShow(false);
-    setDate(currentDate);
+  // const onChange = (event, selectDate) => {
+  //   const currentDate = selectDate || date;
+  //   setShow(false);
+  //   setDate(currentDate);
 
-    let tempDate = new Date(currentDate);
-    let fDate =
-      // tempDate.getDay() +
-      // '/' +
-      tempDate.getDate() +
-      '/' +
-      (tempDate.getMonth() + 1) +
-      '/' +
-      tempDate.getFullYear();
+  //   let tempDate = new Date(currentDate);
+  //   let fDate =
+  //     // tempDate.getDay() +
+  //     // '/' +
+  //     tempDate.getDate() +
+  //     '/' +
+  //     (tempDate.getMonth() + 1) +
+  //     '/' +
+  //     tempDate.getFullYear();
 
-    dispatch(addTimeCurrentItem(fDate));
-    dispatch(addCurrentTime(fDate));
-    getDataFB();
-    getTransferFB(fDate);
-    setText(fDate);
-  };
+  //   dispatch(addTimeCurrentItem(fDate));
+  //   dispatch(addCurrentTime(fDate));
+  //   getDataFB();
+  //   getTransferFB(fDate);
+  //   setText(fDate);
+  // };
 
-  const showMode = currentMode => {
-    setShow(true);
-    setMode(currentMode);
-  };
+  // const showMode = currentMode => {
+  //   setShow(true);
+  //   setMode(currentMode);
+  // };
 
   const actions = [
     {
@@ -107,7 +107,7 @@ const Home = ({navigation}) => {
       position: 1,
     },
   ];
-  //-----------------------------
+  // //-----------------------------
 
   // const test = firestore().collection('Items').get();
   // console.log('data fake', test);
@@ -115,371 +115,371 @@ const Home = ({navigation}) => {
   // const items = useSelector(state => state.itemHomeArr.arrItem);
   // const trans = useSelector(state => state.transferItem.arr);
   //getItemHome
-  const getDataFB = () => {
-    dispatch(clearItem());
-    firestore()
-      .collection('Items')
-      // Filter results
-      // .where('time', '==', time)
-      .where('user', '==', userName)
-      .get()
-      .then(querySnapshot => {
-        // console.log('data items: ', querySnapshot._docs.data());
+  // const getDataFB = () => {
+  //   dispatch(clearItem());
+  //   firestore()
+  //     .collection('Items')
+  //     // Filter results
+  //     // .where('time', '==', time)
+  //     .where('user', '==', userName)
+  //     .get()
+  //     .then(querySnapshot => {
+  //       // console.log('data items: ', querySnapshot._docs.data());
 
-        querySnapshot.forEach(documentSnapshot => {
-          // const temp = {
-          //   id: documentSnapshot.data().id,
-          //   color: documentSnapshot.data().color,
-          //   name: documentSnapshot.data().name,
-          //   icon: documentSnapshot.data().icon,
-          //   time: documentSnapshot.data().time,
-          //   value: documentSnapshot.data().value,
-          //   type: documentSnapshot.data().type,
-          // };
-          // listData.push(temp);
+  //       querySnapshot.forEach(documentSnapshot => {
+  //         // const temp = {
+  //         //   id: documentSnapshot.data().id,
+  //         //   color: documentSnapshot.data().color,
+  //         //   name: documentSnapshot.data().name,
+  //         //   icon: documentSnapshot.data().icon,
+  //         //   time: documentSnapshot.data().time,
+  //         //   value: documentSnapshot.data().value,
+  //         //   type: documentSnapshot.data().type,
+  //         // };
+  //         // listData.push(temp);
 
-          dispatch(
-            addItem({
-              id: documentSnapshot.data().id,
-              color: documentSnapshot.data().color,
-              name: documentSnapshot.data().name,
-              icon: documentSnapshot.data().icon,
-              time: documentSnapshot.data().time,
-              value: documentSnapshot.data().value,
-              type: documentSnapshot.data().type,
-            }),
-          );
-        });
-      });
-  };
+  //         dispatch(
+  //           addItem({
+  //             id: documentSnapshot.data().id,
+  //             color: documentSnapshot.data().color,
+  //             name: documentSnapshot.data().name,
+  //             icon: documentSnapshot.data().icon,
+  //             time: documentSnapshot.data().time,
+  //             value: documentSnapshot.data().value,
+  //             type: documentSnapshot.data().type,
+  //           }),
+  //         );
+  //       });
+  //     });
+  // };
 
-  // const timeCheck = useSelector(state => state.currentTime.time);
-  // console.log('time check', timeCheck.time);
+  // // const timeCheck = useSelector(state => state.currentTime.time);
+  // // console.log('time check', timeCheck.time);
 
-  const getTransferFB = time => {
-    // console.log('transfer', items);
+  // const getTransferFB = time => {
+  //   // console.log('transfer', items);
 
-    // transfer theo ngày
+  //   // transfer theo ngày
 
-    if (pressDate == 0) {
-      dispatch(clearTransfer());
-      dispatch(addModeTime(0));
-      firestore()
-        .collection('Transfer')
-        // Filter results
-        .where('time', '==', time)
-        .where('user', '==', userName)
-        .get()
-        .then(querySnapshot => {
-          console.log('Total transfer: ', querySnapshot.size);
+  //   if (pressDate == 0) {
+  //     dispatch(clearTransfer());
+  //     dispatch(addModeTime(0));
+  //     firestore()
+  //       .collection('Transfer')
+  //       // Filter results
+  //       .where('time', '==', time)
+  //       .where('user', '==', userName)
+  //       .get()
+  //       .then(querySnapshot => {
+  //         console.log('Total transfer: ', querySnapshot.size);
 
-          querySnapshot.forEach(documentSnapshot => {
-            dispatch(
-              updateValueItem({
-                id: documentSnapshot.data().id,
-                idItem: documentSnapshot.data().idItem,
-                time: documentSnapshot.data().time,
-                year: documentSnapshot.data().year,
-                month: documentSnapshot.data().month,
-                week: documentSnapshot.data().week,
-                value: documentSnapshot.data().value,
-              }),
-            );
+  //         querySnapshot.forEach(documentSnapshot => {
+  //           dispatch(
+  //             updateValueItem({
+  //               id: documentSnapshot.data().id,
+  //               idItem: documentSnapshot.data().idItem,
+  //               time: documentSnapshot.data().time,
+  //               year: documentSnapshot.data().year,
+  //               month: documentSnapshot.data().month,
+  //               week: documentSnapshot.data().week,
+  //               value: documentSnapshot.data().value,
+  //             }),
+  //           );
 
-            dispatch(
-              addTransfer({
-                id: documentSnapshot.data().id,
-                idItem: documentSnapshot.data().idItem,
-                time: documentSnapshot.data().time,
-                year: documentSnapshot.data().year,
-                month: documentSnapshot.data().month,
-                week: documentSnapshot.data().week,
-                value: documentSnapshot.data().value,
-              }),
-            );
-          });
-        });
-    }
+  //           dispatch(
+  //             addTransfer({
+  //               id: documentSnapshot.data().id,
+  //               idItem: documentSnapshot.data().idItem,
+  //               time: documentSnapshot.data().time,
+  //               year: documentSnapshot.data().year,
+  //               month: documentSnapshot.data().month,
+  //               week: documentSnapshot.data().week,
+  //               value: documentSnapshot.data().value,
+  //             }),
+  //           );
+  //         });
+  //       });
+  //   }
 
-    // theo tuần
-    else if (pressDate == 1) {
-      // console.log('mode week', pressDate);
-      //const time = useSelector(state => state.currentTime.time);
-      // const month = time.split('/');
+  //   // theo tuần
+  //   else if (pressDate == 1) {
+  //     // console.log('mode week', pressDate);
+  //     //const time = useSelector(state => state.currentTime.time);
+  //     // const month = time.split('/');
 
-      // // get number week in year
-      // const currentDate = new Date(
-      //   parseInt(month[2]),
-      //   parseInt(month[1]) - 1,
-      //   parseInt(month[0]) + 1,
-      // );
-      const week = getDateStartWeek(time);
+  //     // // get number week in year
+  //     // const currentDate = new Date(
+  //     //   parseInt(month[2]),
+  //     //   parseInt(month[1]) - 1,
+  //     //   parseInt(month[0]) + 1,
+  //     // );
+  //     const week = getDateStartWeek(time);
 
-      dispatch(clearTransfer());
-      dispatch(addModeTime(1));
-      firestore()
-        .collection('Transfer')
-        // Filter results
-        .where('week', '==', week)
-        .where('user', '==', userName)
-        .get()
-        .then(querySnapshot => {
-          console.log('Total transfer: ', querySnapshot.size);
+  //     dispatch(clearTransfer());
+  //     dispatch(addModeTime(1));
+  //     firestore()
+  //       .collection('Transfer')
+  //       // Filter results
+  //       .where('week', '==', week)
+  //       .where('user', '==', userName)
+  //       .get()
+  //       .then(querySnapshot => {
+  //         console.log('Total transfer: ', querySnapshot.size);
 
-          querySnapshot.forEach(documentSnapshot => {
-            dispatch(
-              updateValueItem({
-                id: documentSnapshot.data().id,
-                idItem: documentSnapshot.data().idItem,
-                time: documentSnapshot.data().time,
-                year: documentSnapshot.data().year,
-                month: documentSnapshot.data().month,
-                week: documentSnapshot.data().week,
-                value: documentSnapshot.data().value,
-              }),
-            );
+  //         querySnapshot.forEach(documentSnapshot => {
+  //           dispatch(
+  //             updateValueItem({
+  //               id: documentSnapshot.data().id,
+  //               idItem: documentSnapshot.data().idItem,
+  //               time: documentSnapshot.data().time,
+  //               year: documentSnapshot.data().year,
+  //               month: documentSnapshot.data().month,
+  //               week: documentSnapshot.data().week,
+  //               value: documentSnapshot.data().value,
+  //             }),
+  //           );
 
-            dispatch(
-              addTransfer({
-                id: documentSnapshot.data().id,
-                idItem: documentSnapshot.data().idItem,
-                time: documentSnapshot.data().time,
-                year: documentSnapshot.data().year,
-                month: documentSnapshot.data().month,
-                week: documentSnapshot.data().week,
-                value: documentSnapshot.data().value,
-              }),
-            );
-          });
-        });
-    }
-    // // theo tháng
-    else if (pressDate == 2) {
-      // console.log('mode week', pressDate);
-      //const time = useSelector(state => state.currentTime.time);
-      const month = time.split('/');
-      const monthQuery = month[1] + '/' + month[2];
+  //           dispatch(
+  //             addTransfer({
+  //               id: documentSnapshot.data().id,
+  //               idItem: documentSnapshot.data().idItem,
+  //               time: documentSnapshot.data().time,
+  //               year: documentSnapshot.data().year,
+  //               month: documentSnapshot.data().month,
+  //               week: documentSnapshot.data().week,
+  //               value: documentSnapshot.data().value,
+  //             }),
+  //           );
+  //         });
+  //       });
+  //   }
+  //   // // theo tháng
+  //   else if (pressDate == 2) {
+  //     // console.log('mode week', pressDate);
+  //     //const time = useSelector(state => state.currentTime.time);
+  //     const month = time.split('/');
+  //     const monthQuery = month[1] + '/' + month[2];
 
-      //console.log('month', month[1] + '/' + month[2]);
+  //     //console.log('month', month[1] + '/' + month[2]);
 
-      dispatch(clearTransfer());
-      dispatch(addModeTime(2));
-      firestore()
-        .collection('Transfer')
-        // Filter results
-        .where('month', '==', monthQuery)
-        .where('user', '==', userName)
-        .get()
-        .then(querySnapshot => {
-          console.log('Total transfer: ', querySnapshot.size);
+  //     dispatch(clearTransfer());
+  //     dispatch(addModeTime(2));
+  //     firestore()
+  //       .collection('Transfer')
+  //       // Filter results
+  //       .where('month', '==', monthQuery)
+  //       .where('user', '==', userName)
+  //       .get()
+  //       .then(querySnapshot => {
+  //         console.log('Total transfer: ', querySnapshot.size);
 
-          querySnapshot.forEach(documentSnapshot => {
-            dispatch(
-              updateValueItem({
-                id: documentSnapshot.data().id,
-                idItem: documentSnapshot.data().idItem,
-                time: documentSnapshot.data().time,
-                year: documentSnapshot.data().year,
-                month: documentSnapshot.data().month,
-                week: documentSnapshot.data().week,
-                value: documentSnapshot.data().value,
-              }),
-            );
+  //         querySnapshot.forEach(documentSnapshot => {
+  //           dispatch(
+  //             updateValueItem({
+  //               id: documentSnapshot.data().id,
+  //               idItem: documentSnapshot.data().idItem,
+  //               time: documentSnapshot.data().time,
+  //               year: documentSnapshot.data().year,
+  //               month: documentSnapshot.data().month,
+  //               week: documentSnapshot.data().week,
+  //               value: documentSnapshot.data().value,
+  //             }),
+  //           );
 
-            dispatch(
-              addTransfer({
-                id: documentSnapshot.data().id,
-                idItem: documentSnapshot.data().idItem,
-                time: documentSnapshot.data().time,
-                year: documentSnapshot.data().year,
-                month: documentSnapshot.data().month,
-                week: documentSnapshot.data().week,
-                value: documentSnapshot.data().value,
-              }),
-            );
-          });
-        });
-    }
+  //           dispatch(
+  //             addTransfer({
+  //               id: documentSnapshot.data().id,
+  //               idItem: documentSnapshot.data().idItem,
+  //               time: documentSnapshot.data().time,
+  //               year: documentSnapshot.data().year,
+  //               month: documentSnapshot.data().month,
+  //               week: documentSnapshot.data().week,
+  //               value: documentSnapshot.data().value,
+  //             }),
+  //           );
+  //         });
+  //       });
+  //   }
 
-    // // theo năm
-    else if (pressDate == 3) {
-      // console.log('mode week', pressDate);
-      //const time = useSelector(state => state.currentTime.time);
-      const month = time.split('/');
-      const yearQuery = month[2];
+  //   // // theo năm
+  //   else if (pressDate == 3) {
+  //     // console.log('mode week', pressDate);
+  //     //const time = useSelector(state => state.currentTime.time);
+  //     const month = time.split('/');
+  //     const yearQuery = month[2];
 
-      //console.log('month', month[1] + '/' + month[2]);
+  //     //console.log('month', month[1] + '/' + month[2]);
 
-      dispatch(clearTransfer());
-      dispatch(addModeTime(3));
-      firestore()
-        .collection('Transfer')
-        // Filter results
-        .where('year', '==', yearQuery)
-        .where('user', '==', userName)
-        .get()
-        .then(querySnapshot => {
-          console.log('Total transfer: ', querySnapshot.size);
+  //     dispatch(clearTransfer());
+  //     dispatch(addModeTime(3));
+  //     firestore()
+  //       .collection('Transfer')
+  //       // Filter results
+  //       .where('year', '==', yearQuery)
+  //       .where('user', '==', userName)
+  //       .get()
+  //       .then(querySnapshot => {
+  //         console.log('Total transfer: ', querySnapshot.size);
 
-          querySnapshot.forEach(documentSnapshot => {
-            dispatch(
-              updateValueItem({
-                id: documentSnapshot.data().id,
-                idItem: documentSnapshot.data().idItem,
-                time: documentSnapshot.data().time,
-                year: documentSnapshot.data().year,
-                month: documentSnapshot.data().month,
-                week: documentSnapshot.data().week,
-                value: documentSnapshot.data().value,
-              }),
-            );
+  //         querySnapshot.forEach(documentSnapshot => {
+  //           dispatch(
+  //             updateValueItem({
+  //               id: documentSnapshot.data().id,
+  //               idItem: documentSnapshot.data().idItem,
+  //               time: documentSnapshot.data().time,
+  //               year: documentSnapshot.data().year,
+  //               month: documentSnapshot.data().month,
+  //               week: documentSnapshot.data().week,
+  //               value: documentSnapshot.data().value,
+  //             }),
+  //           );
 
-            dispatch(
-              addTransfer({
-                id: documentSnapshot.data().id,
-                idItem: documentSnapshot.data().idItem,
-                time: documentSnapshot.data().time,
-                year: documentSnapshot.data().year,
-                month: documentSnapshot.data().month,
-                week: documentSnapshot.data().week,
-                value: documentSnapshot.data().value,
-              }),
-            );
-          });
-        });
-    }
-  };
+  //           dispatch(
+  //             addTransfer({
+  //               id: documentSnapshot.data().id,
+  //               idItem: documentSnapshot.data().idItem,
+  //               time: documentSnapshot.data().time,
+  //               year: documentSnapshot.data().year,
+  //               month: documentSnapshot.data().month,
+  //               week: documentSnapshot.data().week,
+  //               value: documentSnapshot.data().value,
+  //             }),
+  //           );
+  //         });
+  //       });
+  //   }
+  // };
 
-  //get week
+  // //get week
 
-  const getDateStartWeek = timeVal => {
-    const month = timeVal.split('/');
+  // const getDateStartWeek = timeVal => {
+  //   const month = timeVal.split('/');
 
-    // get number week in year
-    const date = new Date(
-      parseInt(month[2]),
-      parseInt(month[1]) - 1,
-      parseInt(month[0]) + 1,
-    );
+  //   // get number week in year
+  //   const date = new Date(
+  //     parseInt(month[2]),
+  //     parseInt(month[1]) - 1,
+  //     parseInt(month[0]) + 1,
+  //   );
 
-    let timeReturn = 0;
-    const day = 60 * 60 * 24 * 1000;
+  //   let timeReturn = 0;
+  //   const day = 60 * 60 * 24 * 1000;
 
-    switch (date.getDay()) {
-      //th8
-      case 1:
-        timeReturn = new Date(date.getTime() - 6 * day);
-        return (
-          timeReturn.getDate() -
-          1 +
-          '/' +
-          timeReturn.getMonth() +
-          1 +
-          '/' +
-          timeReturn.getFullYear()
-        );
-      case 2:
-        timeReturn = new Date(date.getTime());
-        return (
-          timeReturn.getDate() -
-          1 +
-          '/' +
-          timeReturn.getMonth() +
-          1 +
-          '/' +
-          timeReturn.getFullYear()
-        );
-      //th3
-      case 3:
-        timeReturn = new Date(date.getTime() - day);
-        return (
-          timeReturn.getDate() -
-          1 +
-          '/' +
-          timeReturn.getMonth() +
-          1 +
-          '/' +
-          timeReturn.getFullYear()
-        );
-      //th4
-      case 4:
-        timeReturn = new Date(date.getTime() - 2 * day);
-        return (
-          timeReturn.getDate() -
-          1 +
-          '/' +
-          timeReturn.getMonth() +
-          1 +
-          '/' +
-          timeReturn.getFullYear()
-        );
-      //th5
-      case 5:
-        timeReturn = new Date(date.getTime() - 3 * day);
-        return (
-          timeReturn.getDate() -
-          1 +
-          '/' +
-          timeReturn.getMonth() +
-          1 +
-          '/' +
-          timeReturn.getFullYear()
-        );
-      //th6
-      case 6:
-        timeReturn = new Date(date.getTime() - 4 * day);
-        return (
-          timeReturn.getDate() -
-          1 +
-          '/' +
-          timeReturn.getMonth() +
-          1 +
-          '/' +
-          timeReturn.getFullYear()
-        );
-      //th7
-      case 0:
-        timeReturn = new Date(date.getTime() - 5 * day);
-        return (
-          timeReturn.getDate() -
-          1 +
-          '/' +
-          timeReturn.getMonth() +
-          1 +
-          '/' +
-          timeReturn.getFullYear()
-        );
-      default:
-        return date;
-    }
+  //   switch (date.getDay()) {
+  //     //th8
+  //     case 1:
+  //       timeReturn = new Date(date.getTime() - 6 * day);
+  //       return (
+  //         timeReturn.getDate() -
+  //         1 +
+  //         '/' +
+  //         timeReturn.getMonth() +
+  //         1 +
+  //         '/' +
+  //         timeReturn.getFullYear()
+  //       );
+  //     case 2:
+  //       timeReturn = new Date(date.getTime());
+  //       return (
+  //         timeReturn.getDate() -
+  //         1 +
+  //         '/' +
+  //         timeReturn.getMonth() +
+  //         1 +
+  //         '/' +
+  //         timeReturn.getFullYear()
+  //       );
+  //     //th3
+  //     case 3:
+  //       timeReturn = new Date(date.getTime() - day);
+  //       return (
+  //         timeReturn.getDate() -
+  //         1 +
+  //         '/' +
+  //         timeReturn.getMonth() +
+  //         1 +
+  //         '/' +
+  //         timeReturn.getFullYear()
+  //       );
+  //     //th4
+  //     case 4:
+  //       timeReturn = new Date(date.getTime() - 2 * day);
+  //       return (
+  //         timeReturn.getDate() -
+  //         1 +
+  //         '/' +
+  //         timeReturn.getMonth() +
+  //         1 +
+  //         '/' +
+  //         timeReturn.getFullYear()
+  //       );
+  //     //th5
+  //     case 5:
+  //       timeReturn = new Date(date.getTime() - 3 * day);
+  //       return (
+  //         timeReturn.getDate() -
+  //         1 +
+  //         '/' +
+  //         timeReturn.getMonth() +
+  //         1 +
+  //         '/' +
+  //         timeReturn.getFullYear()
+  //       );
+  //     //th6
+  //     case 6:
+  //       timeReturn = new Date(date.getTime() - 4 * day);
+  //       return (
+  //         timeReturn.getDate() -
+  //         1 +
+  //         '/' +
+  //         timeReturn.getMonth() +
+  //         1 +
+  //         '/' +
+  //         timeReturn.getFullYear()
+  //       );
+  //     //th7
+  //     case 0:
+  //       timeReturn = new Date(date.getTime() - 5 * day);
+  //       return (
+  //         timeReturn.getDate() -
+  //         1 +
+  //         '/' +
+  //         timeReturn.getMonth() +
+  //         1 +
+  //         '/' +
+  //         timeReturn.getFullYear()
+  //       );
+  //     default:
+  //       return date;
+  //   }
 
-    //return date.getDay();
-  };
-  //-------------
+  //   //return date.getDay();
+  // };
+  // //-------------
 
-  // const [blank, setBlank] = useState(0);
-  const blank = useSelector(state => state.blankInOut);
-  const getAllTransferFB = () => {
-    firestore()
-      .collection('Transfer')
-      .where('user', '==', userName)
-      .get()
-      .then(querySnapshot => {
-        // console.log('Total transfer: ', querySnapshot.size);
-        let moneyIn = 0;
-        let moneyOut = 0;
-        querySnapshot.forEach(documentSnapshot => {
-          // console.log('test here', documentSnapshot.data().type);
-          documentSnapshot.data().type === 'thu'
-            ? (moneyIn += documentSnapshot.data().value)
-            : (moneyOut += documentSnapshot.data().value);
-        });
-        // setBlank(moneyIn - moneyOut);
-        dispatch(addBlankInOut({In: moneyIn, Out: moneyOut}));
-      });
+  // // const [blank, setBlank] = useState(0);
+  // const blank = useSelector(state => state.blankInOut);
+  // const getAllTransferFB = () => {
+  //   firestore()
+  //     .collection('Transfer')
+  //     .where('user', '==', userName)
+  //     .get()
+  //     .then(querySnapshot => {
+  //       // console.log('Total transfer: ', querySnapshot.size);
+  //       let moneyIn = 0;
+  //       let moneyOut = 0;
+  //       querySnapshot.forEach(documentSnapshot => {
+  //         // console.log('test here', documentSnapshot.data().type);
+  //         documentSnapshot.data().type === 'thu'
+  //           ? (moneyIn += documentSnapshot.data().value)
+  //           : (moneyOut += documentSnapshot.data().value);
+  //       });
+  //       // setBlank(moneyIn - moneyOut);
+  //       dispatch(addBlankInOut({In: moneyIn, Out: moneyOut}));
+  //     });
 
-    // console.log(blank);
-  };
+  //   // console.log(blank);
+  // };
 
   // useEffect(() => {
   //   const getData = async () => {
@@ -507,62 +507,84 @@ const Home = ({navigation}) => {
     //navigation.navigate('Test');
     signOutMain();
   };
-  const handleUpDowDate = type => {
-    const val = date;
-    const day = 60 * 60 * 24 * 1000;
-    const camp =
-      type === 'dow'
-        ? new Date(val.getTime() - day)
-        : new Date(val.getTime() + day);
+  // const handleUpDowDate = type => {
+  //   const val = date;
+  //   const day = 60 * 60 * 24 * 1000;
+  //   const camp =
+  //     type === 'dow'
+  //       ? new Date(val.getTime() - day)
+  //       : new Date(val.getTime() + day);
 
-    const txt =
-      camp.getDate() + '/' + (camp.getMonth() + 1) + '/' + camp.getFullYear();
-    setDate(camp);
-    setText(txt);
-    dispatch(addTimeCurrentItem(txt));
-    dispatch(addCurrentTime(txt));
-    getDataFB(txt);
-    getTransferFB(txt, pressDate);
+  //   const txt =
+  //     camp.getDate() + '/' + (camp.getMonth() + 1) + '/' + camp.getFullYear();
+  //   setDate(camp);
+  //   setText(txt);
+  //   dispatch(addTimeCurrentItem(txt));
+  //   dispatch(addCurrentTime(txt));
+  //   getDataFB(txt);
+  //   getTransferFB(txt, pressDate);
+  // };
+
+  // const BtnDate = ({title, id}) => {
+  //   const bg = pressDate === id ? 'white' : '#6c7ee1';
+  //   const txtColor = pressDate === id ? '#6c7ee1' : 'white';
+
+  //   const handleChooseModeDate = () => {
+  //     setPressDate(id);
+  //     // getTransferFB(text, id);
+  //   };
+
+  //   return (
+  //     <TouchableOpacity
+  //       onPress={handleChooseModeDate}
+  //       style={{backgroundColor: bg}}
+  //       className="p-1 px-2 border-[1px] border-slate-100 ">
+  //       <Text style={{color: txtColor}} className="font-bold text-slate-100">
+  //         {title}
+  //       </Text>
+  //     </TouchableOpacity>
+  //   );
+  // };
+
+  const handleNavigateEdit = () => {
+    // navigation.navigate('BottomSheetEdit');
+    navigation.navigate('LichSu', {screen: 'LichSuStack'});
   };
 
-  const BtnDate = ({title, id}) => {
-    const bg = pressDate === id ? 'white' : '#6c7ee1';
-    const txtColor = pressDate === id ? '#6c7ee1' : 'white';
+  // const [time, setTime] = useState('ss');
+  // const timeValue = useSelector(State => State.currentTime.time);
 
-    const handleChooseModeDate = () => {
-      setPressDate(id);
-      // getTransferFB(text, id);
-    };
+  // // setTime(timeValue);
 
-    return (
-      <TouchableOpacity
-        onPress={handleChooseModeDate}
-        style={{backgroundColor: bg}}
-        className="p-1 px-2 border-[1px] border-slate-100 ">
-        <Text style={{color: txtColor}} className="font-bold text-slate-100">
-          {title}
-        </Text>
-      </TouchableOpacity>
-    );
-  };
+  let InMoney = 0;
+  let OutMoney = 0;
+  const AllData = useSelector(State => State.dataAll);
+  AllData.arrTrans.map(item => {
+    if (item.type == 'chi') {
+      OutMoney += item.value;
+    } else {
+      InMoney += item.value;
+    }
+  });
+
+  // console.log('arrItem', AllData.arrItem);
+  // console.log('arrTrans', AllData.arrTrans.length);
+  // console.log('timeValue', AllData.time);
+  // console.log('timeMode', AllData.modeTime);
+  // console.log('modeTime', modeTime);
 
   const refRBSheet = useRef();
   return (
     <SafeAreaView className="flex-1 pt-3 bg-primary">
-      <View className="flex flex-row justify-between pb-3 px-1">
-        <Icon size={24} color={'white'} name="menu" />
+      <View className="flex flex-row justify-center pb-3 px-1">
         <View className="flex justify-center items-center gap-1">
-          <Text className="text-lg text-slate-100">Xin chào: {userName}</Text>
-          <Text className="text-lg text-slate-100"> Số dư của bạn </Text>
-
+          <Text className="text-lg text-slate-100 font-bold">
+            Số dư của bạn
+          </Text>
           <Text className="text-xl font-bold text-slate-100">
-            {blank.In - blank.Out} đ
+            {InMoney - OutMoney} đ
           </Text>
         </View>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('NotifyStack', {name: 'demo'})}>
-          <Icon size={24} color={'white'} name="notifications" />
-        </TouchableOpacity>
       </View>
       {/* <View className="items-center flex flex-row justify-between p-3 bg-primary">
         <TouchableOpacity onPress={() => handleUpDowDate('dow')}>
@@ -599,16 +621,22 @@ const Home = ({navigation}) => {
         />
       )} */}
 
-      <HeaderTime />
+      {/* <HeaderTime /> */}
+
+      {/* <HeaderTimeAll /> */}
+
       {/* Body */}
       <View className="bg-slate-100 flex-1">
         <View className="flex-1 relative">
-          <TabHome time={text} />
+          {/* <TabHome handleNavigateEdit={handleNavigateEdit} time={text} /> */}
+          <TabHome handleNavigateEdit={handleNavigateEdit} />
           {/* <TouchableOpacity
                         onPress={() => navigation.navigate('Test', {name: 'Jane'})}
                         className="absolute bottom-0 right-0 m-4 bg-primary p-4 rounded-full">
                         <Icon color={'white'} name="add" size={28} />
                       </TouchableOpacity> */}
+
+          {/* <View> */}
           <FloatingAction
             actions={actions}
             onPressItem={name => {
@@ -619,6 +647,7 @@ const Home = ({navigation}) => {
               // navigation.navigate('AddItemHomeStack', {name: 'demo'});
             }}
           />
+          {/* </View> */}
           <RBSheet
             ref={refRBSheet}
             closeOnDragDown={true}
@@ -652,6 +681,13 @@ const Home = ({navigation}) => {
         onPress={() => handleSignOut()}>
         <Text>Sign Out</Text>
       </TouchableOpacity> */}
+
+      <TouchableOpacity
+        className="bg-black"
+        // onPress={() => navigation.navigate('LichSu', { screen: 'LichSuStack' })}>
+        onPress={handleNavigateEdit}>
+        <Text>Click</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };

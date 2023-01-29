@@ -20,6 +20,10 @@ import {
   itemHomeArr,
   updateNameColorIconItem,
 } from '../../redux/slice/itemHomeSlice/itemHomeSlice';
+import {
+  addDataItem,
+  updateNameColorIconItemData,
+} from '../../redux/slice/dataAllSlice/dataAllSlice';
 const AddItemHome = (props, {navigation}) => {
   const dispatch = useDispatch();
   const currenItem = useSelector(state => state.currentItem);
@@ -29,6 +33,7 @@ const AddItemHome = (props, {navigation}) => {
   // const typeItem = useSelector(state => state.currentItem.type);
   const valueItem = useSelector(state => state.currentItem.value);
   const [name, setName] = useState('');
+  const nameCurrent = useSelector(State => State.currentItem.name);
   // const [value, setValue] = useState('0');
   // const [color, setColor] = useState('green');
 
@@ -78,17 +83,26 @@ const AddItemHome = (props, {navigation}) => {
         .collection('Items')
         .doc('' + currenItem.id)
         .update({
-          name: name,
+          name: name != '' ? name : nameCurrent,
           // value: valueItem,
           color: colorItem,
           icon: iconItem,
         })
         .then(() => {
           console.log('User updated!');
+          // dispatch(
+          //   updateNameColorIconItem({
+          //     idItem: currenItem.id,
+          //     name: name,
+          //     color: colorItem,
+          //     icon: iconItem,
+          //   }),
+          // );
+
           dispatch(
-            updateNameColorIconItem({
+            updateNameColorIconItemData({
               idItem: currenItem.id,
-              name: name,
+              name: name != '' ? name : nameCurrent,
               color: colorItem,
               icon: iconItem,
             }),
@@ -115,8 +129,21 @@ const AddItemHome = (props, {navigation}) => {
         })
         .then(() => {
           console.log('item added!');
+          // dispatch(
+          //   addItem({
+          //     name: name,
+          //     // value: valueItem,
+          //     value: 0,
+          //     color: colorItem,
+          //     icon: iconItem,
+          //     // time: time,
+          //     id: timeID,
+          //     type: type,
+          //     user: userName,
+          //   }),
+          // );
           dispatch(
-            addItem({
+            addDataItem({
               name: name,
               // value: valueItem,
               value: 0,

@@ -17,7 +17,7 @@ import {udValueItem} from '../../redux/slice/getItemAllSlice/getItemAllSlice';
 import {getItemByDate} from '../../FuncGlobal/getItemByDWMY';
 import {useEffect} from 'react';
 import {getAllItemCurrentByDate} from '../../redux/slice/getItemCurrentAllSlice/getItemCurrentAllSlice';
-const HomeTabChiPhi = props => {
+const HomeTabThuNhap = props => {
   const dispatch = useDispatch();
   const moveScreen = props.route.params.moveScreen;
   //test------------------------
@@ -30,14 +30,14 @@ const HomeTabChiPhi = props => {
   let total = 0;
   AllData.arrItem.map(item =>
     item.type === 'thu'
-      ? (moneyIn += item.value)
-      : ((moneyOut += item.value), (total += item.value)),
+      ? ((moneyIn += item.value), (total += item.value))
+      : (moneyOut += item.value),
   );
 
   let dataPie = [];
   total = total === 0 ? 1 : total;
   AllData.arrItem.map(item => {
-    if (item.type == 'chi') {
+    if (item.type == 'thu') {
       const dt = {percentage: (item.value / total) * 100, color: item.color};
       dataPie.push(dt);
     }
@@ -88,20 +88,6 @@ const HomeTabChiPhi = props => {
           <View className="ml-3 w-[164px] mr-4">
             <View className="mb-1 border-b-[1px] w-full border-gray-500">
               <Text className="text-base font-semibold text-slate-500">
-                Chi phí
-              </Text>
-              <View className="flex-row">
-                <Text
-                  numberOfLines={1}
-                  className="text-xl font-semibold text-rose-600 max-w-[155px]">
-                  {moneyOut}
-                </Text>
-                <Text className="text-lg font-semibold text-rose-600"> đ</Text>
-              </View>
-            </View>
-
-            <View className="mb-1 border-b-[1px] w-full border-gray-500">
-              <Text className="text-base font-semibold text-slate-500">
                 Thu nhập
               </Text>
               <View className="flex-row">
@@ -111,6 +97,20 @@ const HomeTabChiPhi = props => {
                   {moneyIn}
                 </Text>
                 <Text className="text-lg font-semibold text-green-600"> đ</Text>
+              </View>
+            </View>
+
+            <View className="mb-1 border-b-[1px] w-full border-gray-500">
+              <Text className="text-base font-semibold text-slate-500">
+                Chi phí
+              </Text>
+              <View className="flex-row">
+                <Text
+                  numberOfLines={1}
+                  className="text-xl font-semibold text-rose-600 max-w-[155px]">
+                  {moneyOut}
+                </Text>
+                <Text className="text-lg font-semibold text-rose-600"> đ</Text>
               </View>
             </View>
           </View>
@@ -134,7 +134,7 @@ const HomeTabChiPhi = props => {
           ))} */}
 
           {AllData.arrItem.map((item, index) =>
-            item.type === 'chi' ? (
+            item.type === 'thu' ? (
               <HomeItem
                 moveScreen={moveScreen}
                 key={item.id}
@@ -159,7 +159,7 @@ const HomeTabChiPhi = props => {
   );
 };
 
-export default HomeTabChiPhi;
+export default HomeTabThuNhap;
 
 const styles = StyleSheet.create({
   container: {alignItems: 'center', justifyContent: 'center', height: 1050},

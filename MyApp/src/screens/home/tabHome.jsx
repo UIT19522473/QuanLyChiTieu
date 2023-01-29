@@ -6,7 +6,7 @@ import HomeTabThuNhap from '../../components/HomeTabThuNhap/HomeTabThuNhap';
 
 const TabTop = createMaterialTopTabNavigator();
 
-const TabHome = (props, {navigate}) => {
+const TabHome = props => {
   return (
     <TabTop.Navigator
       initialRouteName="Feed"
@@ -16,12 +16,14 @@ const TabHome = (props, {navigate}) => {
         tabBarStyle: {backgroundColor: '#92b9e3'},
       }}>
       <TabTop.Screen
+        initialParams={{moveScreen: props.handleNavigateEdit}}
         name="TabChiPhi"
         component={HomeTabChiPhi}
         options={{tabBarLabel: 'Chi Phí'}}
         listeners={{tabPress: e => console.log('Tab Chi Phi', e.target)}}
       />
       <TabTop.Screen
+        initialParams={{moveScreen: props.handleNavigateEdit}}
         name="TabThuNhap"
         component={HomeTabThuNhap}
         options={{tabBarLabel: 'Thu Nhập'}}

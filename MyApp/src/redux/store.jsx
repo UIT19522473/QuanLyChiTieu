@@ -7,7 +7,11 @@ import currentTimeReducer from './slice/currentTimeSlice/currentTimeSlice';
 import subTransferReducer from './slice/subTransferSlice/subTransferSlice';
 import blankInOutReducer from './slice/blankInOutSlice/blankInOutSlice';
 import authReducer from './slice/authSlice/authSlice';
+import getItemAllReducer from './slice/getItemAllSlice/getItemAllSlice';
+import getTransferAllReducer from './slice/getTransferAllSlice/getTransferAllSlice';
+import getItemCurrentAllReducer from './slice/getItemCurrentAllSlice/getItemCurrentAllSlice';
 
+import dataAllReducer from './slice/dataAllSlice/dataAllSlice';
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
@@ -18,5 +22,11 @@ export const store = configureStore({
     subTransferItem: subTransferReducer,
     blankInOut: blankInOutReducer,
     auth: authReducer,
+
+    getItemAll: getItemAllReducer,
+    getTransferAll: getTransferAllReducer,
+
+    getItemCurentAll: getItemCurrentAllReducer,
+    dataAll: dataAllReducer,
   },
 });

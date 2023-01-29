@@ -1,5 +1,6 @@
-import {View, Text, TouchableOpacity} from 'react-native';
-import React from 'react';
+import {View, Text, TouchableOpacity, Alert} from 'react-native';
+import Modal from 'react-native-modal';
+import React, {useState} from 'react';
 import * as Progress from 'react-native-progress';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -11,10 +12,25 @@ import {
   clearSubTransfer,
   addSubTransfer,
 } from '../../redux/slice/subTransferSlice/subTransferSlice';
+import {
+  removeItemById,
+  removeTransferByIdItem,
+} from '../../redux/slice/dataAllSlice/dataAllSlice';
 
-const BtsHomeItem = () => {
+import ModalDetailItem from './ModalDetailItem';
+
+const BtsHomeItem = (props, {navigation}) => {
   const dispatch = useDispatch();
   const item = useSelector(state => state.currentItem);
+
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalDetailVisible, setModalDetailVisible] = useState(false);
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+  const toggleModalDetail = () => {
+    setModalDetailVisible(!isModalDetailVisible);
+  };
 
   //time last week
   const timeWeek = useSelector(state => state.currentTime.week);
@@ -58,9 +74,128 @@ const BtsHomeItem = () => {
     refRBSheet.current.open();
   };
 
+  const ItemCurrent = useSelector(State => State.currentItem);
+  const allData = useSelector(State => State.dataAll);
+
+  let count = 0;
+
+  allData.arrTrans.map(item => {
+    if (item.idItem == ItemCurrent.id) {
+      count++;
+    }
+  });
+  // console.log('All data... ', allData);
+  const deleteHandler = () => {
+    Alert.alert(
+      'Bạn có chắc muốn xóa ' + ItemCurrent.name + '?',
+      'Tất cả các giao dịch (' +
+        subTransfer.length +
+        ') liên quan đến danh mục này sẽ bị xóa.',
+      [
+        {text: 'Có', onPress: () => console.log('yes delete')},
+        {text: 'Hủy', onPress: () => console.log('No delete')},
+      ],
+    );
+  };
+
+  const handleDeleteItem = () => {
+    // console.log('delete Item');
+
+    toggleModal();
+    //remove item
+    firestore()
+      .collection('Items')
+      .doc(item.id.toString())
+      .delete()
+      .then(() => {
+        console.log('deleted items!!!');
+        dispatch(removeItemById(item.id));
+      });
+
+    // remove transfer
+    dispatch(removeTransferByIdItem(item.id));
+    firestore()
+      .collection('Transfer')
+      .where('idItem', '==', item.id)
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(documentSnapshot => {
+          firestore()
+            .collection('Transfer')
+            .doc(documentSnapshot.id.toString())
+            .delete()
+            .then(() => {
+              console.log('deleted transfer!!!');
+            });
+        });
+      });
+  };
+
+  // console.log('all item now...', allData.arrItem);
+
+  // console.log('all transfer now...', allData.arrTrans);
+
   const refRBSheet = useRef();
   return (
-    <View className="flex-1">
+    <View className="flex-1 ">
+      {/* modal delete */}
+      <Modal
+        className="flex justify-center items-center"
+        isVisible={isModalVisible}>
+        <TouchableOpacity
+          className="flex-1 w-full relative"
+          onPress={toggleModal}></TouchableOpacity>
+
+        <View className="rounded-xl flex flex-col h-[220px] w-full bg-white absolute py-4">
+          <View className="flex-row items-center">
+            <View className="mx-1 flex justify-center items-center  w-[90px]">
+              <View
+                style={{backgroundColor: ItemCurrent.color}}
+                className="p-3 rounded-full">
+                <Icon size={22} name={ItemCurrent.icon} color={'white'} />
+              </View>
+            </View>
+
+            <View className="flex-wrap flex-row w-[250px]">
+              <Text className="text-xl font-bold text-slate-900">
+                Bạn muốn xóa {ItemCurrent.name}?
+              </Text>
+            </View>
+          </View>
+          <View className="flex-row flex-wrap px-6 mt-4">
+            <Text className="text-base text-gray-600">
+              Tất cả các giao dịch
+              <Text className="font-bold">{' (' + count + ') '}</Text>
+              liên quan đến danh mục này sẽ bị xóa
+            </Text>
+          </View>
+
+          <View className="justify-end flex-row px-6 mt-8">
+            <TouchableOpacity onPress={toggleModal} className="mr-14">
+              <Text className="text-lg font-bold text-gray-500">Hủy</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={handleDeleteItem}>
+              <Text className="text-lg font-bold text-red-600">Xóa</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+      {/* ------------ */}
+
+      {/* modal chi tiet----------------- */}
+
+      <Modal
+        className="flex justify-center items-center"
+        isVisible={isModalDetailVisible}>
+        <TouchableOpacity
+          className="flex-1 w-full relative"
+          onPress={toggleModalDetail}></TouchableOpacity>
+
+        <ModalDetailItem toggleModalDetail={toggleModalDetail} />
+      </Modal>
+      {/* ------------------------------ */}
+
       <View
         style={{backgroundColor: item.color}}
         className="flex flex-col bg-orange-500 p-4 gap-2">
@@ -89,6 +224,8 @@ const BtsHomeItem = () => {
       <View className="flex flex-row justify-around mt-4">
         <TouchableOpacity
           // onPress={openBottomSheet}
+          // onPress={() => deleteHandler()}
+          onPress={toggleModal}
           className="p-2  items-center ">
           <View className="rounded-full p-3 bg-red-200 mb-1">
             <Icon name="delete-sweep" size={24} color={'#c92424'} />
@@ -104,7 +241,8 @@ const BtsHomeItem = () => {
           <Text className="text-xs font-semibold text-gray">Chỉnh sửa</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          // onPress={openBottomSheet}
+          // onPress={props.moveScreen}
+          onPress={toggleModalDetail}
           className="p-2  items-center ">
           <View className="rounded-full p-3 bg-blue-200 mb-1">
             <Icon name="assignment" size={24} color={'blue'} />

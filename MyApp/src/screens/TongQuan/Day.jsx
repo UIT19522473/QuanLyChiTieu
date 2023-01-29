@@ -9,7 +9,8 @@ import HomeItem from '../../components/HomeItem/HomeItem';
 const Day = () => {
   // const [itemArr, SetItemArr] = useState([]);
 
-  let itemArr = useSelector(state => state.itemHomeArr.arrItem);
+  const data = useSelector(state => state.dataAll);
+  let itemArr = data.arrItem;
   let moneyIn = 0;
   let moneyOut = 0;
 
@@ -147,7 +148,7 @@ const Day = () => {
               Tổng số giao dịch :
             </Text>
             <Text className="text-2xl font-bold text-primary">
-              {transferByDay.length}
+              {/* {transferByDay.length} */}2
             </Text>
           </View>
           {/* <Text>Mục chi nhiều nhất</Text>

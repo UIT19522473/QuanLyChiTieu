@@ -18,7 +18,11 @@ import ChooseItem from '../ChooseItem/ChooseItem';
 import {useSelector, useDispatch} from 'react-redux';
 import {addTransfer} from '../../redux/slice/transferSlice/transferSlice';
 import firestore from '@react-native-firebase/firestore';
-import {updateValueItem} from '../../redux/slice/itemHomeSlice/itemHomeSlice';
+// import { updateValueItem } from '../../redux/slice/itemHomeSlice/itemHomeSlice';
+import {
+  updateValueItem,
+  addDataTransfer,
+} from '../../redux/slice/dataAllSlice/dataAllSlice';
 import {
   updateBlankIn,
   updateBlankOut,
@@ -238,10 +242,24 @@ const AddTransferHome = () => {
             value: result - 0,
           }),
         );
+        dispatch(
+          addDataTransfer({
+            id: id,
+            idItem: currentItem.id,
+            value: result - 0,
+            time: time,
+            year: month[2],
+            month: month[1] + '/' + month[2],
+            week: getDateStartWeek(currentDate),
+            note: text,
+            type: currentItem.type,
+            user: userName,
+          }),
+        );
 
-        currentItem.type === 'thu'
-          ? dispatch(updateBlankIn(result - 0))
-          : dispatch(updateBlankOut(result - 0));
+        // currentItem.type === 'thu'
+        //   ? dispatch(updateBlankIn(result - 0))
+        //   : dispatch(updateBlankOut(result - 0));
       });
   };
   return (

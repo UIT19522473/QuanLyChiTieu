@@ -20,8 +20,20 @@ import {AuthContext} from '../../components/context';
 import {useContext} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {logAuth} from '../../redux/slice/authSlice/authSlice';
+import firestore from '@react-native-firebase/firestore';
+import {
+  addAllDataItem,
+  addAllDataTransfer,
+  addDataItem,
+  addDataTransfer,
+  addTimeInfo,
+  addModeTimeData,
+  clearDataItem,
+  clearDataTransfer,
+} from '../../redux/slice/dataAllSlice/dataAllSlice';
 
 import auth from '@react-native-firebase/auth';
+import PushNotification from 'react-native-push-notification';
 
 onFacebookSignIn = () => {
   console.warn('Facebook');
@@ -41,13 +53,87 @@ const SignIn = ({navigation}) => {
   const [userName, setUserName] = useState('');
   const [pass, setPass] = useState('');
   const {signInMain} = useContext(AuthContext);
+
+  //sleep
+
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  const slepp = async () => {
+    for (let i = 0; i < 3; i++) {
+      console.log(`Waiting ${i} seconds...`);
+      await sleep(i * 1000);
+    }
+    signInMain();
+  };
+
+  const createChannels = () => {
+    PushNotification.createChannel({
+      channelId: 'test-channel',
+      channelName: 'Test Channel',
+    });
+  };
+
+  const loadAllDataByUser = userName => {
+    // createChannels();
+    //get AllItems
+    dispatch(clearDataItem());
+    firestore()
+      .collection('Items')
+      .where('user', '==', userName)
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(documentSnapshot => {
+          dispatch(
+            addDataItem({
+              id: documentSnapshot.data().id,
+              color: documentSnapshot.data().color,
+              name: documentSnapshot.data().name,
+              icon: documentSnapshot.data().icon,
+              user: documentSnapshot.data().user,
+              value: documentSnapshot.data().value,
+              type: documentSnapshot.data().type,
+            }),
+          );
+        });
+      });
+
+    //get All Transfer
+    dispatch(clearDataTransfer());
+    firestore()
+      .collection('Transfer')
+      .where('user', '==', userName)
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(documentSnapshot => {
+          dispatch(
+            addDataTransfer({
+              id: documentSnapshot.data().id,
+              idItem: documentSnapshot.data().idItem,
+              month: documentSnapshot.data().month,
+              note: documentSnapshot.data().note,
+              time: documentSnapshot.data().time,
+              type: documentSnapshot.data().type,
+              user: documentSnapshot.data().user,
+              value: documentSnapshot.data().value,
+              week: documentSnapshot.data().week,
+              year: documentSnapshot.data().year,
+            }),
+          );
+        });
+      });
+  };
+
   const handleSignIn = () => {
     auth()
       .signInWithEmailAndPassword(userName, pass)
       .then(() => {
         console.log('User account created & signed in!');
         dispatch(logAuth(userName.split('@')[0]));
-        signInMain();
+        loadAllDataByUser(userName.split('@')[0]);
+        // signInMain();
+        slepp();
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {

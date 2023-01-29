@@ -490,6 +490,60 @@ const HeaderTime = ({navigation}) => {
     getData();
   }, [pressDate]);
 
+  //test get all data
+
+  //get AllItems
+  // const getAllItems = () => {
+  //   dispatch(clearItem());
+  //   firestore()
+  //     .collection('Items')
+  //     .where('user', '==', userName)
+  //     .get()
+  //     .then(querySnapshot => {
+  //       querySnapshot.forEach(documentSnapshot => {
+  //         dispatch(
+  //           addItem({
+  //             id: documentSnapshot.data().id,
+  //             color: documentSnapshot.data().color,
+  //             name: documentSnapshot.data().name,
+  //             icon: documentSnapshot.data().icon,
+  //             time: documentSnapshot.data().time,
+  //             value: documentSnapshot.data().value,
+  //             type: documentSnapshot.data().type,
+  //           }),
+  //         );
+  //       });
+  //     });
+  // }
+  // //get All Transfer
+  // const getAllTransfer = () => {
+  //   firestore()
+  //   .collection('Transfer')
+  //   .where('user', '==', userName)
+  //   .get()
+  //   .then(querySnapshot => {
+  //     // console.log('Total transfer: ', querySnapshot.size);
+  //     let moneyIn = 0;
+  //     let moneyOut = 0;
+  //     querySnapshot.forEach(documentSnapshot => {
+  //       // console.log('test here', documentSnapshot.data().type);
+  //       documentSnapshot.data().type === 'thu'
+  //         ? (moneyIn += documentSnapshot.data().value)
+  //         : (moneyOut += documentSnapshot.data().value);
+  //     });
+  //     // setBlank(moneyIn - moneyOut);
+  //     dispatch(addBlankInOut({In: moneyIn, Out: moneyOut}));
+  //   });
+  // }
+
+  // useEffect (() => {
+  //   const getAllData = async () => {
+  //     await getAllItems();
+  //     await getAllTransfer();
+  //   };
+  //   getAllData();
+  // },[])
+
   //------------------------------
   // console.log('length', itemHome.length);
 
@@ -565,7 +619,7 @@ const HeaderTime = ({navigation}) => {
         </TouchableOpacity>
       </View>
 
-      <View className="justify-center items-center mb-2 bg-primary pb-4">
+      <View className="justify-center items-center bg-primary pb-4">
         <View className="w-[70%] items-center flex-row justify-center">
           <BtnDate title={'Ngày'} id={0} />
           <BtnDate title={'Tuần'} id={1} />

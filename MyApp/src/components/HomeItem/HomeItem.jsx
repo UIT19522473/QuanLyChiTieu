@@ -20,6 +20,7 @@ const HomeItem = props => {
   const dispatch = useDispatch();
   // const time = useSelector(state => state.currentTime.time);
 
+  const allData = useSelector(State => State.dataAll);
   // const item = useSelector(state => state.currentItem);
   const timeCurrent = useSelector(state => state.currentTime.time);
 
@@ -37,15 +38,20 @@ const HomeItem = props => {
   // console.log(useSelector(state => state.currentItem.time));
   const Body = () => {
     return (
-      <View className="mx-2 flex justify-center items-center">
+      <View className="mx-1 flex justify-center items-center  w-[90px]">
         {/* <Text>{time}</Text> */}
         <Text className="font-bold text-sm mb-1">{name}</Text>
         <View style={{backgroundColor: color}} className="p-3 rounded-full">
           <Icon size={22} name={icon} color={'white'} />
         </View>
-        <Text className="font-bold text-primary text-xs mt-[1px]">
-          {value} đ
-        </Text>
+        <View className="flex-row justify-center">
+          <Text
+            numberOfLines={1}
+            className="font-bold text-primary text-xs mt-[1px] max-w-[140px">
+            {value}
+          </Text>
+          <Text className="font-bold text-primary"> đ</Text>
+        </View>
       </View>
     );
   };
@@ -53,113 +59,173 @@ const HomeItem = props => {
     //sub transfer theo ngày
     if (timeMode == 0) {
       dispatch(clearSubTransfer());
-      firestore()
-        .collection('Transfer')
-        // Filter results
-        .where('time', '==', time)
-        .where('idItem', '==', id)
-        .get()
-        .then(querySnapshot => {
-          console.log('Total items: ', querySnapshot.size);
+      // firestore()
+      //   .collection('Transfer')
+      //   // Filter results
+      //   .where('time', '==', time)
+      //   .where('idItem', '==', id)
+      //   .get()
+      //   .then(querySnapshot => {
+      //     console.log('Total items: ', querySnapshot.size);
 
-          querySnapshot.forEach(documentSnapshot => {
-            const temp = {
-              id: documentSnapshot.data().id,
-              idItem: documentSnapshot.data().idItem,
-              note: documentSnapshot.data().note,
-              time: documentSnapshot.data().time,
-              value: documentSnapshot.data().value,
-              type: documentSnapshot.data().type,
-            };
-            // listData.push(temp);
+      //     querySnapshot.forEach(documentSnapshot => {
+      //       const temp = {
+      //         id: documentSnapshot.data().id,
+      //         idItem: documentSnapshot.data().idItem,
+      //         note: documentSnapshot.data().note,
+      //         time: documentSnapshot.data().time,
+      //         value: documentSnapshot.data().value,
+      //         type: documentSnapshot.data().type,
+      //       };
+      //       // listData.push(temp);
 
-            dispatch(addSubTransfer(temp));
-          });
-        });
+      //       dispatch(addSubTransfer(temp));
+      //     });
+      //   });
+      allData.arrTrans.map(item => {
+        if (time == item.time && item.idItem == id) {
+          dispatch(addSubTransfer(item));
+        }
+      });
     }
 
     //sub transfer theo tuần
     if (timeMode == 1) {
       dispatch(clearSubTransfer());
-      firestore()
-        .collection('Transfer')
-        // Filter results
-        .where('week', '==', timeVal.week)
-        .where('idItem', '==', id)
-        .get()
-        .then(querySnapshot => {
-          console.log('Total items: ', querySnapshot.size);
 
-          querySnapshot.forEach(documentSnapshot => {
-            const temp = {
-              id: documentSnapshot.data().id,
-              idItem: documentSnapshot.data().idItem,
-              note: documentSnapshot.data().note,
-              time: documentSnapshot.data().time,
-              value: documentSnapshot.data().value,
-              type: documentSnapshot.data().type,
-            };
-            // listData.push(temp);
+      allData.arrTrans.map(item => {
+        if (timeVal.week == item.week && item.idItem == id) {
+          dispatch(addSubTransfer(item));
+        }
+      });
 
-            dispatch(addSubTransfer(temp));
-          });
-        });
+      // firestore()
+      //   .collection('Transfer')
+      //   // Filter results
+      //   .where('week', '==', timeVal.week)
+      //   .where('idItem', '==', id)
+      //   .get()
+      //   .then(querySnapshot => {
+      //     console.log('Total items: ', querySnapshot.size);
+
+      //     querySnapshot.forEach(documentSnapshot => {
+      //       const temp = {
+      //         id: documentSnapshot.data().id,
+      //         idItem: documentSnapshot.data().idItem,
+      //         note: documentSnapshot.data().note,
+      //         time: documentSnapshot.data().time,
+      //         value: documentSnapshot.data().value,
+      //         type: documentSnapshot.data().type,
+      //       };
+      //       // listData.push(temp);
+
+      //       dispatch(addSubTransfer(temp));
+      //     });
+      //   });
     }
 
     //sub transfer theo tháng
     if (timeMode == 2) {
       dispatch(clearSubTransfer());
-      firestore()
-        .collection('Transfer')
-        // Filter results
-        .where('month', '==', timeVal.month)
-        .where('idItem', '==', id)
-        .get()
-        .then(querySnapshot => {
-          console.log('Total items: ', querySnapshot.size);
 
-          querySnapshot.forEach(documentSnapshot => {
-            const temp = {
-              id: documentSnapshot.data().id,
-              idItem: documentSnapshot.data().idItem,
-              note: documentSnapshot.data().note,
-              time: documentSnapshot.data().time,
-              value: documentSnapshot.data().value,
-              type: documentSnapshot.data().type,
-            };
-            // listData.push(temp);
+      allData.arrTrans.map(item => {
+        if (timeVal.month == item.month && item.idItem == id) {
+          dispatch(addSubTransfer(item));
+        }
+      });
 
-            dispatch(addSubTransfer(temp));
-          });
-        });
+      // firestore()
+      //   .collection('Transfer')
+      //   // Filter results
+      //   .where('month', '==', timeVal.month)
+      //   .where('idItem', '==', id)
+      //   .get()
+      //   .then(querySnapshot => {
+      //     console.log('Total items: ', querySnapshot.size);
+
+      //     querySnapshot.forEach(documentSnapshot => {
+      //       const temp = {
+      //         id: documentSnapshot.data().id,
+      //         idItem: documentSnapshot.data().idItem,
+      //         note: documentSnapshot.data().note,
+      //         time: documentSnapshot.data().time,
+      //         value: documentSnapshot.data().value,
+      //         type: documentSnapshot.data().type,
+      //       };
+      //       // listData.push(temp);
+
+      //       dispatch(addSubTransfer(temp));
+      //     });
+      //   });
     }
 
     //sub transfer theo năm
     if (timeMode == 3) {
       dispatch(clearSubTransfer());
-      firestore()
-        .collection('Transfer')
-        // Filter results
-        .where('year', '==', timeVal.year)
-        .where('idItem', '==', id)
-        .get()
-        .then(querySnapshot => {
-          console.log('Total items: ', querySnapshot.size);
 
-          querySnapshot.forEach(documentSnapshot => {
-            const temp = {
-              id: documentSnapshot.data().id,
-              idItem: documentSnapshot.data().idItem,
-              note: documentSnapshot.data().note,
-              time: documentSnapshot.data().time,
-              value: documentSnapshot.data().value,
-              type: documentSnapshot.data().type,
-            };
-            // listData.push(temp);
+      allData.arrTrans.map(item => {
+        if (timeVal.year == item.year && item.idItem == id) {
+          dispatch(addSubTransfer(item));
+        }
+      });
 
-            dispatch(addSubTransfer(temp));
-          });
-        });
+      // firestore()
+      //   .collection('Transfer')
+      //   // Filter results
+      //   .where('year', '==', timeVal.year)
+      //   .where('idItem', '==', id)
+      //   .get()
+      //   .then(querySnapshot => {
+      //     console.log('Total items: ', querySnapshot.size);
+
+      //     querySnapshot.forEach(documentSnapshot => {
+      //       const temp = {
+      //         id: documentSnapshot.data().id,
+      //         idItem: documentSnapshot.data().idItem,
+      //         note: documentSnapshot.data().note,
+      //         time: documentSnapshot.data().time,
+      //         value: documentSnapshot.data().value,
+      //         type: documentSnapshot.data().type,
+      //       };
+      //       // listData.push(temp);
+
+      //       dispatch(addSubTransfer(temp));
+      //     });
+      //   });
+    }
+
+    //sub transfer tat ca cac nam
+    if (timeMode == 4) {
+      dispatch(clearSubTransfer());
+
+      allData.arrTrans.map(item => {
+        if (item.idItem == id) {
+          dispatch(addSubTransfer(item));
+        }
+      });
+
+      // firestore()
+      //   .collection('Transfer')
+      //   // Filter results
+      //   .where('idItem', '==', id)
+      //   .get()
+      //   .then(querySnapshot => {
+      //     console.log('Total items: ', querySnapshot.size);
+
+      //     querySnapshot.forEach(documentSnapshot => {
+      //       const temp = {
+      //         id: documentSnapshot.data().id,
+      //         idItem: documentSnapshot.data().idItem,
+      //         note: documentSnapshot.data().note,
+      //         time: documentSnapshot.data().time,
+      //         value: documentSnapshot.data().value,
+      //         type: documentSnapshot.data().type,
+      //       };
+      //       // listData.push(temp);
+
+      //       dispatch(addSubTransfer(temp));
+      //     });
+      //   });
     }
   };
 
@@ -180,9 +246,14 @@ const HomeItem = props => {
   };
   return (
     <TouchableOpacity
+      // onLongPress={() => navigation.navigate('BottomSheetEdit')}
       onLongPress={() => openEdit()}
       onPress={() => openAddTransfer()}
-      className="flex flex-col justify-center items-center gap-1 m-2  p-2 rounded-xl">
+      // onPress={
+      //   // console.log('alo alo');
+      //   props.moveScreen
+      // }
+      className="flex flex-col justify-center items-center m-2 rounded-xl mb-4">
       <Body />
 
       <RBSheet
@@ -198,7 +269,13 @@ const HomeItem = props => {
             backgroundColor: '#000',
           },
         }}>
-        {typeModal === 'edit' ? <BtsHomeItem /> : <AddTransferHome />}
+        {typeModal === 'edit' ? (
+          <BtsHomeItem moveScreen={props.moveScreen} />
+        ) : (
+          <AddTransferHome />
+        )}
+
+        {/* {typeModal === 'edit' ? <BtsHomeItem /> : <></>} */}
       </RBSheet>
     </TouchableOpacity>
   );

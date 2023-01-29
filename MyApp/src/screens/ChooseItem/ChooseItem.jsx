@@ -65,7 +65,8 @@ const ChooseItem = props => {
     );
   };
 
-  const data = useSelector(state => state.itemHomeArr.arrItem);
+  // const data = useSelector(state => state.itemHomeArr.arrItem);
+  const data = useSelector(State => State.dataAll.arrItem);
   const [tab, setTab] = useState('chi');
   const borderChi = tab === 'chi' ? 3 : 0;
   const borderThu = tab === 'thu' ? 3 : 0;

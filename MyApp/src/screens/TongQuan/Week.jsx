@@ -32,6 +32,7 @@ const chartConfig = {
 
 const ChartView = ({pickedTime, data}) => {
   const navigation = useNavigation();
+  getData.loadData(data);
   const valuesDataChart = getData.getWeekData(
     getData.convertTimeFormat(pickedTime),
     data,
@@ -141,8 +142,8 @@ const Week = ({pickedTime}) => {
 
   //all data
   const allData = useSelector(State => State.dataAll);
-  console.log('data all Item', allData.arrItem);
-  console.log('data all Transfer', allData.arrTrans);
+  // console.log('data all Item', allData.arrItem);
+  // console.log('data all Transfer', allData.arrTrans);
 
   return (
     <NavigationContainer independent={true}>

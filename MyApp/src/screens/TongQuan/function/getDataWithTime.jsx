@@ -1,6 +1,12 @@
 import {transfers} from '../data/transfers';
 import {items} from '../data/items';
 
+let allData = [];
+
+export const loadData = data => {
+  allData = data;
+};
+
 export const convertTimeFormat = time => {
   const timeArr = time.split('/');
   return new Date(timeArr[2] + '-' + timeArr[1] + '-' + timeArr[0]);
@@ -39,7 +45,7 @@ export const getWeekData = (timePicked, data) => {
     //   }
     // });
 
-    data.arrTrans.forEach(element => {
+    allData.arrTrans.forEach(element => {
       if (
         convertTimeFormat(element.time).getDate() === currDay.getDate() &&
         convertTimeFormat(element.time).getMonth() === currDay.getMonth() &&
@@ -125,36 +131,57 @@ export const getExpenseWeekSumCategory = (pickedTime, data) => {
 
   //fix-----------
 
-  let currMonday = getMonday(pickedTime);
-  let currSunday = new Date();
-  currSunday.setDate(currMonday.getDate() + 6);
-  let transferList = [];
-  for (let i = 0; i < data.arrTrans.length; i++) {
-    let tempDay = convertTimeFormat(data.arrTrans[i].time);
+  // let currMonday = getMonday(pickedTime);
+  // let currSunday = new Date();
+  // currSunday.setDate(currMonday.getDate() + 6);
+  // let transferList = [];
+  // //load transfer form start week to end week
+  // for (let i = 0; i < allData.arrTrans.length; i++) {
+  //   let tempDay = convertTimeFormat(allData.arrTrans[i].time);
 
-    if (
-      tempDay.getTime() >= currMonday.getTime() &&
-      tempDay.getTime() <= currSunday.getTime() &&
-      data.arrTrans[i].type == 'chi'
-    ) {
-      transferList.push(transfers[i]);
-    }
-  }
-  let result = [];
-  transferList.reduce(function (res, value) {
-    if (!res[value.iditem]) {
-      res[value.iditem] = {iditem: value.iditem, value: 0};
-      result.push(res[value.iditem]);
-    }
-    res[value.iditem].value += value.value;
-    return res;
-  }, {});
-  result.forEach(el => {
-    (el.name = getItemWithID(el.iditem).name),
-      (el.color = getItemWithID(el.iditem).color),
-      (el.icon = getItemWithID(el.iditem).icon);
-  });
-  return result;
+  //   if (
+  //     tempDay.getTime() >= currMonday.getTime() &&
+  //     tempDay.getTime() <= currSunday.getTime() &&
+  //     allData.arrTrans[i].type == 'chi'
+  //   ) {
+  //     transferList.push(allData.arrTrans[i]);
+  //   }
+  // }
+  // //group transfer by Item
+  // let result = [];
+  // transferList.reduce(function (res, value) {
+  //   if (!res[value.iditem]) {
+  //     res[value.iditem] = {iditem: value.iditem, value: 0};
+  //     result.push(res[value.iditem]);
+  //   }
+  //   res[value.iditem].value += value.value;
+  //   return res;
+  // }, {});
+
+  // // allData.arrItem.forEach(item => {
+  // //   allData.timeArr.forEach(trans => {
+  // //     if (trans.idItem == item.id) {
+  // //       result.
+  // //     }
+  // //   })
+  // // })
+
+  // // result = [
+  // //   {
+  // //     idItem: ''',
+  // //     value:''
+  // // nameItem:
+  // //   }
+  // // ]
+
+  // result.forEach(el => {
+  //   (el.name = getItemWithID(el.iditem).name),
+  //     (el.color = getItemWithID(el.iditem).color),
+  //     (el.icon = getItemWithID(el.iditem).icon);
+  // });
+  // return result;
+
+  return allData.arrItem;
 };
 
 export const getIncomeWeekSumCategory = (pickedTime, data) => {

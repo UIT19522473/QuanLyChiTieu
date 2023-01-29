@@ -1,78 +1,149 @@
-import {View, Text, StyleSheet} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import React from 'react';
 
-import {COLOR} from '../sign_in/component/Color';
-import {LineChart} from 'react-native-chart-kit';
-import {Dimensions} from 'react-native';
+import { COLOR } from '../sign_in/component/Color';
+import { LineChart } from 'react-native-chart-kit';
+import { Dimensions } from 'react-native';
 
 import InfoOfAnalyze from './Components/InfoOfAnalyze';
 import CustomTotal from './Components/CustomTotal';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import DetailWeekNavigator from './Navigator/DetailWeekNavigator';
 
-const data = {
-  labels: ['1', '2', '3', '4', '5', '6', '7', '8'],
-  datasets: [
-    {
-      data: [1000, 900, 1400, 400, 1100, 632, 980],
-      color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
-      strokeWidth: 2, // optional
-    },
-  ],
-};
+import { transfers } from './data/transfers';
+import * as getData from './function/getDataWithTime';
+
 
 const chartConfig = {
-  backgroundGradientFrom: '#1E2923',
-  backgroundGradientFromOpacity: 0,
-  backgroundGradientTo: '#08130D',
-  backgroundGradientToOpacity: 0.5,
-  color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
-  barPercentage: 0.5,
-  useShadowColorFromDataset: false, // optional
-};
+  backgroundGradientFrom: '#fff',
+  backgroundGradientTo: "#fff",
 
-const Week = () => {
+  color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+  barPercentage: 0.5,
+  useShadowColorFromDataset: true,
+  decimalPlaces: 0,
+
+  propsForLabels: {
+    fontSize: 12
+  }
+
+
+}
+
+const ChartView = ({pickedTime }) => {
+
+  const navigation = useNavigation();
+  const valuesDataChart = getData.getWeekData(getData.convertTimeFormat(pickedTime));
+  const dataChart = {
+    labels: ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ nhật"],
+    datasets: [
+      {
+        data: valuesDataChart.income,
+        color: (opacity = 1) => `rgba(36, 107, 253,1)`, // optional
+        strokeWidth: 5, // optional
+      },
+      {
+        data: valuesDataChart.expense,
+        color: (opacity = 1) => `rgba(247, 85, 85,1)`, // optional
+        strokeWidth: 5 // optional
+      }
+    ]
+  };
+  const sumIncome = valuesDataChart.income.reduce((partialSum, a) => partialSum + a, 0);
+  const sumExpense = valuesDataChart.expense.reduce((partialSum, a) => partialSum + a, 0);
+  const valueDataView = getData.getCompareTime(valuesDataChart.income, valuesDataChart.expense);
+
+  const dayInWeek = ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ nhật"]
   return (
     <View style={styles.container}>
-      <LineChart
-        data={data}
+      <LineChart data={dataChart}
         chartConfig={chartConfig}
-        width={Dimensions.get('window').width - 40}
-        height={200}
+        width={Dimensions.get("window").width}
+        height={220}
+        withDots={false}
+        // withVerticalLines={false}
+        // withHorizontalLines={false}
+        fromZero={true}
+        bezier
       />
       <View style={styles.areaTotal}>
         <CustomTotal
-          totalMoney={'$3759.45'}
-          iconColor="#246bfd"
-          backColor={'#eef4ff'}
+          totalMoney={sumIncome}
+          type="INCOME"
+          onPress={() => navigation.navigate("DetailWeekNavigator",
+            {
+              screen: "Income",
+            })}
         />
-        <CustomTotal totalMoney={'$26426'} />
+        <CustomTotal totalMoney={sumExpense}
+          type="EXPENSE"
+          onPress={() => navigation.navigate("DetailWeekNavigator",
+            {
+              screen: "Expense",
+            })}
+        />
       </View>
       <View style={styles.areaInfo}>
         <InfoOfAnalyze
-          title={'Best Week'}
-          money={'$1,948.58'}
-          date={'Dec 03-09'}
+          title={'Ngày tốt nhất'}
+          money={valueDataView.bestMoney + " vnđ"}
+          date={dayInWeek[valueDataView.bestElement]}
         />
         <InfoOfAnalyze
-          title={'Average Value'}
-          money={'$2,475.52'}
+          title={'Trung bình'}
+          money={valueDataView.averageMoney + "vnđ"}
           date={'2022'}
         />
       </View>
       <View style={styles.areaInfo}>
         <InfoOfAnalyze
-          title={'Worst Week'}
-          money={'$564.83'}
-          date={'Dec 25-31'}
+          title={'Ngày tệ nhất'}
+          money={valueDataView.worstMoney + " vnđ"}
+          date={dayInWeek[valueDataView.worstElement]}
         />
-        <InfoOfAnalyze title={'Transactions'} money={'75'} date={'2022'} />
+        <InfoOfAnalyze title={'Số giao dịch'} money={valuesDataChart.count} date={'2022'} />
       </View>
     </View>
+  );
+}
+
+const WeekStack = createNativeStackNavigator();
+
+
+
+const Week = ({ pickedTime }) => {
+  return (
+    <NavigationContainer independent={true} >
+      <WeekStack.Navigator 
+      screenOptions={({route}) => (
+        {
+          headerShown: true,
+          title: "Tuần này",
+          headerStyle: {
+            backgroundColor: "#6c7ee1",
+
+          },
+          headerTintColor: 'white',
+          headerTitleAlign: 'center',
+          headerTitleStyle: {
+            fontWeight: 'bold'
+          },
+          statusBarColor: "#6c7ee1"
+        } )}
+      >
+        <WeekStack.Screen name="ChartView" options={{ headerShown: false }}>
+          {(props) => <ChartView pickedTime={pickedTime} />}
+        </WeekStack.Screen>
+        <WeekStack.Screen name="DetailWeekNavigator" component={DetailWeekNavigator} />
+      </WeekStack.Navigator>
+    </NavigationContainer>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     paddingVertical: 10,
     backgroundColor: 'white',
     height: '100%',

@@ -1,22 +1,29 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Pressable } from 'react-native'
 import React from 'react'
 
-import Icon from "react-native-vector-icons/Feather";
+import Icon from 'react-native-vector-icons/AntDesign'
 
-const CustomTotal = ({totalMoney}) => {
+const textType = {
+    INCOME : "Thu nhập",
+    EXPENSE : "Chi tiêu"
+}
+
+
+
+const CustomTotal = ({totalMoney,type, onPress}) => {
   return (
-    <View style={styles.container}>
-        <View style={{backgroundColor : '#eef4ff', width : 50, height: 50, borderRadius: 25, justifyContent: 'center'}}>
-            <View style={{alignSelf: 'center', backgroundColor: '#246bfd', padding: 3, borderRadius: 5}}>
-                <Icon name='arrow-down' size={13} color={'white'} />
+    <Pressable style={styles.container} onPress={onPress}>
+        <View style={[{width : 50, height: 50, borderRadius: 25, justifyContent: 'center'}, styles[`circleIcon_${type}`]]}>
+            <View style={[{alignSelf: 'center', padding: 3, borderRadius: 5}, styles[`bgIcon_${type}`]]}>
+                <Icon name='arrowdown' size={13} color={'white'} />
             </View>
         </View>
         <View style={{marginLeft: 13 }}>
             <Text style={styles.moneyText}>{totalMoney}</Text>
-            <Text style={styles.typeText}>Income</Text>
+            <Text style={styles.typeText}>{textType[`${type}`]}</Text>
         </View>
-    </View>
-  )
+    </Pressable>
+  );
 }
 
 export default CustomTotal
@@ -40,6 +47,17 @@ const styles = StyleSheet.create({
     typeText : {
         color: 'black',
         fontSize: 12
-
+    },
+    circleIcon_EXPENSE : {
+        backgroundColor: '#fff2f3'
+    },
+    bgIcon_EXPENSE : {
+        backgroundColor: '#fb7077'
+    },
+    circleIcon_INCOME : {
+        backgroundColor: '#eef4ff'
+    },
+    bgIcon_INCOME : {
+        backgroundColor: '#246bfd'
     }
 })

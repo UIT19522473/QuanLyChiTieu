@@ -57,7 +57,8 @@ const TongQuan = () => {
         <Text>{item.time}</Text>
       ))} */}
 
-      {modeTime == 0 ? <Day /> : <Month />}
+      {/* {modeTime == 0 ? <Day /> : <Month />} */}
+      <Week pickedTime="05/01/2023"/>
 
       {/* <Week /> */}
     </View>

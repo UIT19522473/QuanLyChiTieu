@@ -10,6 +10,7 @@ import authReducer from './slice/authSlice/authSlice';
 import getItemAllReducer from './slice/getItemAllSlice/getItemAllSlice';
 import getTransferAllReducer from './slice/getTransferAllSlice/getTransferAllSlice';
 import getItemCurrentAllReducer from './slice/getItemCurrentAllSlice/getItemCurrentAllSlice';
+import HanMucAddReducer from './slice/HanMucSlice/HanMucSlice';
 
 import dataAllReducer from './slice/dataAllSlice/dataAllSlice';
 export const store = configureStore({
@@ -28,5 +29,7 @@ export const store = configureStore({
 
     getItemCurentAll: getItemCurrentAllReducer,
     dataAll: dataAllReducer,
+
+    HanMucAdd: HanMucAddReducer,
   },
 });

@@ -62,14 +62,17 @@ const TienIch = ({navigation}) => {
       </TouchableOpacity> */}
 
       <View className="flex-row justify-evenly">
-        <TouchableOpacity className="w-[150px] h-[150px] border-[1px] rounded-3xl border-orange-500 justify-center items-center">
+        <TouchableOpacity
+          onPress={() => navigation.navigate('HanMucChi')}
+          className="w-[150px] h-[150px] border-[1px] rounded-3xl border-orange-500 justify-center items-center">
           <Icon size={46} name="payments" color="orange" />
           <Text className="mt-4 text-base font-semibold text-gray-500">
             Hạn mức chi
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => exportDataToExcel()}
+          // onPress={() => exportDataToExcel()}
+          onPress={() => navigation.navigate('XuatFile')}
           className="w-[150px] h-[150px] border-[1px] rounded-3xl border-green-500 justify-center items-center">
           <Icon size={46} name="file-present" color="green" />
           <Text className="mt-4 text-base font-semibold text-gray-500">
@@ -79,13 +82,17 @@ const TienIch = ({navigation}) => {
       </View>
 
       <View className="flex-row justify-evenly mt-6">
-        <TouchableOpacity className="w-[150px] h-[150px] border-[1px] rounded-3xl border-blue-500 justify-center items-center">
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Todo')}
+          className="w-[150px] h-[150px] border-[1px] rounded-3xl border-blue-500 justify-center items-center">
           <Icon size={46} name="done-all" color="blue" />
           <Text className="mt-4 text-base font-semibold text-gray-500">
             Việc hôm nay
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity className="w-[150px] h-[150px] border-[1px] rounded-3xl border-red-500 justify-center items-center">
+        <TouchableOpacity
+          onPress={() => navigation.navigate('SearchValue')}
+          className="w-[150px] h-[150px] border-[1px] rounded-3xl border-red-500 justify-center items-center">
           <Icon size={46} name="search" color="red" />
           <Text className="mt-4 text-base font-semibold text-gray-500">
             Tra cứu tỷ giá

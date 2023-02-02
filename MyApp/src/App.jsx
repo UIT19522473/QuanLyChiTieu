@@ -41,6 +41,10 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import HeaderTimeAll from './screens/home/HeaderTimeAll';
 
 import TienIch from './screens/TienIch/TienIch';
+import HanMucChi from './screens/TienIch/HanMucChi/HanMucChi';
+import XuatFile from './screens/TienIch/XuatFile/XuatFile';
+import Todo from './screens/TienIch/Todo/Todo';
+import SearchValue from './screens/TienIch/SearchValue/SearchValue';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -71,6 +75,10 @@ function TienIchStackScreen() {
     <TienIchStack.Navigator
       screenOptions={{headerShown: false, tabBarStyle: {display: 'none'}}}>
       <TienIchStack.Screen name="TienIchHome" component={TienIch} />
+      <TienIchStack.Screen name="HanMucChi" component={HanMucChi} />
+      <TienIchStack.Screen name="XuatFile" component={XuatFile} />
+      <TienIchStack.Screen name="Todo" component={Todo} />
+      <TienIchStack.Screen name="SearchValue" component={SearchValue} />
       <TienIchStack.Screen name="HanMuc" component={HanMuc} />
     </TienIchStack.Navigator>
   );

@@ -30,6 +30,7 @@ import {
   addModeTimeData,
   clearDataItem,
   clearDataTransfer,
+  addHanMuc,
 } from '../../redux/slice/dataAllSlice/dataAllSlice';
 
 import auth from '@react-native-firebase/auth';
@@ -111,6 +112,28 @@ const SignIn = ({navigation}) => {
               value: documentSnapshot.data().value,
               week: documentSnapshot.data().week,
               year: documentSnapshot.data().year,
+            }),
+          );
+        });
+      });
+
+    //getAllHanMuc
+    dispatch(clearDataTransfer());
+    firestore()
+      .collection('HanMuc')
+      .where('user', '==', userName)
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(documentSnapshot => {
+          dispatch(
+            addHanMuc({
+              id: documentSnapshot.data().id,
+              arrChoose: documentSnapshot.data().arrChoose,
+              money: documentSnapshot.data().money,
+              name: documentSnapshot.data().name,
+              timeEnd: documentSnapshot.data().timeEnd,
+              timeStart: documentSnapshot.data().timeStart,
+              user: documentSnapshot.data().user,
             }),
           );
         });

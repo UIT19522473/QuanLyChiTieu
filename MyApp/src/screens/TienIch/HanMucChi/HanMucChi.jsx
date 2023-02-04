@@ -26,6 +26,7 @@ import {
 
 // import CheckBox from '@react-native-community/checkbox';
 import firestore from '@react-native-firebase/firestore';
+import {addHanMuc} from '../../../redux/slice/dataAllSlice/dataAllSlice';
 
 const ItemMenu = props => {
   const dispatch = useDispatch();
@@ -84,7 +85,85 @@ const ItemMenu = props => {
   );
 };
 
-const ItemHanMuc = () => {
+const getDayBetween = timeEnd => {
+  const stringSplit = timeEnd.split('/');
+
+  const timeE = new Date(
+    parseInt(stringSplit[2]),
+    parseInt(stringSplit[1]) - 1,
+    parseInt(stringSplit[0]),
+  );
+
+  const timeNow = new Date();
+
+  let difference = timeE.getTime() - timeNow.getTime();
+  let TotalDays = Math.ceil(difference / (1000 * 3600 * 24));
+  return TotalDays;
+};
+
+const convertStringToDate = str => {
+  const stringSplit = str.split('/');
+
+  const timeE = new Date(
+    parseInt(stringSplit[2]),
+    parseInt(stringSplit[1]) - 1,
+    parseInt(stringSplit[0]),
+  );
+  return timeE;
+};
+
+const getMoneyBetween = (HanMuc, allData) => {
+  let arrIdArrChoose = [];
+  HanMuc.arrChoose.map(item => {
+    arrIdArrChoose.push(item.id);
+  });
+
+  // console.log(arrIdArrChoose);
+  let value = 0;
+
+  const strSplitStart = HanMuc.timeStart.split('/');
+  const strSplitEnd = HanMuc.timeEnd.split('/');
+  const timeS = new Date(
+    parseInt(strSplitStart[2]),
+    parseInt(strSplitStart[1]) - 1,
+    parseInt(strSplitStart[0]),
+  );
+  const timeE = new Date(
+    parseInt(strSplitEnd[2]),
+    parseInt(strSplitEnd[1]) - 1,
+    parseInt(strSplitEnd[0]),
+  );
+
+  const timeNow = new Date();
+
+  allData.arrTrans.map(trans => {
+    if (
+      arrIdArrChoose.includes(trans.idItem) &&
+      // timeNow.getTime() >= timeS.getTime() &&
+      // timeNow.getTime() <= timeE.getTime() &&
+      convertStringToDate(trans.time).getTime() >= timeS.getTime() &&
+      convertStringToDate(trans.time).getTime() <= timeE.getTime()
+    ) {
+      value += trans.value;
+    }
+  });
+  return value;
+};
+
+const convertNumberToStringPercent = (num1, num2) => {
+  const percentNumber = ((num1 / num2) * 100).toFixed(2);
+  const percentString = percentNumber + '%';
+  return percentString;
+};
+
+const ItemHanMuc = ({data}) => {
+  const dispatch = useDispatch();
+  const dataAll = useSelector(State => State.dataAll);
+
+  const percent = convertNumberToStringPercent(
+    getMoneyBetween(data, dataAll),
+    data.money,
+  );
   return (
     <TouchableOpacity className="p-4 border-b-[1px] border-zinc-400 mb-4">
       <View className="flex-row mb-6 items-center">
@@ -92,21 +171,27 @@ const ItemHanMuc = () => {
           <Icon name="payments" size={28} color="green" />
         </View>
         <View className="ml-4">
-          <Text className="text-gray-900 text-lg font-bold">Demo</Text>
-          <Text className="text-base text-gray-600">Time 1/2-2/2</Text>
+          <Text className="text-gray-900 text-lg font-bold">{data.name}</Text>
+          <Text className="text-sm text-gray-600">
+            {data.timeStart} - {data.timeEnd}
+          </Text>
         </View>
         <View className="ml-auto">
-          <Text className="text-lg text-primary font-bold">20000 đ</Text>
+          <Text className="text-xl text-primary font-bold">{data.money} đ</Text>
         </View>
       </View>
       <View className="w-full h-[10px] rounded-xl bg-slate-300 mb-2">
         <View
-          style={{width: '30%', backgroundColor: 'red'}}
+          style={{width: percent, backgroundColor: 'red'}}
           className="h-[10px] rounded-xl"></View>
       </View>
       <View className="justify-between flex-row">
-        <Text className="text-base text-gray-600">Còn 20 ngày</Text>
-        <Text className="text-base text-gray-900 font-bold">15.000đ</Text>
+        <Text className="text-base text-gray-600">
+          Còn {getDayBetween(data.timeEnd)} ngày
+        </Text>
+        <Text className="text-base text-gray-900 font-bold">
+          {getMoneyBetween(data, dataAll)} đ
+        </Text>
       </View>
     </TouchableOpacity>
   );
@@ -217,7 +302,7 @@ const ModalAddHanMuc = ({toggleModal}) => {
         .doc('' + id)
         .set({
           id: id,
-          money: value,
+          money: parseInt(value),
           name: name,
           arrChoose: arrChoose,
           timeStart:
@@ -240,12 +325,38 @@ const ModalAddHanMuc = ({toggleModal}) => {
         })
         .then(() => {
           console.log('item added!');
+          dispatch(
+            addHanMuc({
+              id: id,
+              money: parseInt(value),
+              name: name,
+              arrChoose: arrChoose,
+              timeStart:
+                text == 'Empty'
+                  ? date.getDate() +
+                    '/' +
+                    (date.getMonth() + 1) +
+                    '/' +
+                    date.getFullYear()
+                  : text,
+              timeEnd:
+                text2 == 'Empty'
+                  ? date2.getDate() +
+                    '/' +
+                    (date2.getMonth() + 1) +
+                    '/' +
+                    date2.getFullYear()
+                  : text2,
+              user: auth.userName,
+            }),
+          );
 
           ToastAndroid.showWithGravity(
             'Đã thêm hạn mức',
             ToastAndroid.SHORT,
             ToastAndroid.CENTER,
           );
+          toggleModal();
 
           // dispatch(
           //   updateValueItem({
@@ -469,12 +580,16 @@ const HanMucChi = ({navigation}) => {
       </View>
 
       <ScrollView contentContainerStyle={{flexGrow: 1}}>
-        <ItemHanMuc />
+        {/* <ItemHanMuc /> */}
         {/* <ItemHanMuc />
         <ItemHanMuc />
         <ItemHanMuc />
         <ItemHanMuc />
         <ItemHanMuc /> */}
+
+        {allData.arrHanMuc.map(item => (
+          <ItemHanMuc data={item} />
+        ))}
       </ScrollView>
 
       <Modal className="flex justify-center items-center" isVisible={modeModal}>

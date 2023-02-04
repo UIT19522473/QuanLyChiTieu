@@ -7,6 +7,7 @@ export const dataAllSlice = createSlice({
   initialState: {
     arrItem: [],
     arrTrans: [],
+    arrHanMuc: [],
     time: '',
     week: '',
     month: '',
@@ -17,6 +18,20 @@ export const dataAllSlice = createSlice({
     completeTrans: 0,
   },
   reducers: {
+    addHanMuc: (state, action) => {
+      state.arrHanMuc.push(action.payload);
+    },
+    removeHanMucById: (state, action) => {
+      const index = state.arrHanMuc.findIndex(
+        item => item.id === action.payload,
+      );
+
+      if (index > -1) {
+        // only splice array when item is found
+        state.arrItem.splice(index, 1); // 2nd parameter means remove one item only
+      }
+    },
+
     addAllDataTransfer: (state, action) => {
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
       // doesn't actually mutate the state because it uses the Immer library,
@@ -211,6 +226,8 @@ export const {
   clearData,
   clearDataItem,
   clearDataTransfer,
+  addHanMuc,
+  removeHanMucById,
 } = dataAllSlice.actions;
 
 export default dataAllSlice.reducer;

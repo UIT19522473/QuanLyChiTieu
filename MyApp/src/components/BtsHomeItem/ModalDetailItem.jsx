@@ -41,7 +41,7 @@ function compare(a, b) {
 const ItemDetail = ({data}) => {
   const time = data.time.split('/');
   return (
-    <View className="flex-row items-center p-4 bg-slate-200 mb-2">
+    <TouchableOpacity className="flex-row items-center p-4 bg-slate-200 mb-2">
       <Text className="text-2xl font-bold text-primary">{time[0]}</Text>
       <View className="ml-4">
         <Text className="text-base font-bold text-slate-600">hôm nay</Text>
@@ -63,7 +63,7 @@ const ItemDetail = ({data}) => {
           <></>
         )}
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

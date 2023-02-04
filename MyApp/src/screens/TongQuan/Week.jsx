@@ -1,4 +1,4 @@
-import {ScrollView,View, Text, StyleSheet} from 'react-native';
+import {ScrollView, View, Text, StyleSheet} from 'react-native';
 import React from 'react';
 
 import {COLOR} from '../sign_in/component/Color';
@@ -16,7 +16,7 @@ import * as getData from './function/getDataWithTime';
 
 import {useSelector, useDispatch} from 'react-redux';
 
-var detailTitle = "";
+var detailTitle = '';
 const chartConfig = {
   backgroundGradientFrom: '#fff',
   backgroundGradientTo: '#fff',
@@ -35,7 +35,7 @@ const ChartView = ({pickedTime, data}) => {
   const navigation = useNavigation();
   getData.loadData(data);
   const valuesDataChart = getData.getWeekData(
-    getData.convertTimeFormat(pickedTime)
+    getData.convertTimeFormat(pickedTime),
   );
   const dataChart = {
     labels: ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ nhật'],
@@ -76,15 +76,27 @@ const ChartView = ({pickedTime, data}) => {
   ];
 
   const currMonday = getData.getMonday(getData.convertTimeFormat(pickedTime));
-  const mondayText = currMonday.getDate() + "/" + currMonday.getMonth() + 1 + "/" + currMonday.getFullYear();
+  const mondayText =
+    currMonday.getDate() +
+    '/' +
+    currMonday.getMonth() +
+    1 +
+    '/' +
+    currMonday.getFullYear();
   const currSunday = new Date(currMonday.getTime() + 86400000 * 6);
-  const sundayText = currSunday.getDate() + "/" + (currSunday.getMonth() + 1) + "/" + currSunday.getFullYear();
+  const sundayText =
+    currSunday.getDate() +
+    '/' +
+    (currSunday.getMonth() + 1) +
+    '/' +
+    currSunday.getFullYear();
   console.log(currSunday);
-  const averageText = mondayText + "-" + sundayText;
+  const averageText = mondayText + '-' + sundayText;
   detailTitle = averageText;
   return (
     <ScrollView style={styles.container}>
       <LineChart
+        className="mt-4"
         data={dataChart}
         chartConfig={chartConfig}
         width={Dimensions.get('window').width}

@@ -1,22 +1,22 @@
-import { ScrollView, View, Text, StyleSheet } from 'react-native';
+import {ScrollView, View, Text, StyleSheet} from 'react-native';
 import React from 'react';
 
-import { COLOR } from '../sign_in/component/Color';
-import { LineChart } from 'react-native-chart-kit';
-import { Dimensions } from 'react-native';
+import {COLOR} from '../sign_in/component/Color';
+import {LineChart} from 'react-native-chart-kit';
+import {Dimensions} from 'react-native';
 
 import InfoOfAnalyze from './Components/InfoOfAnalyze';
 import CustomTotal from './Components/CustomTotal';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import DetailWeekNavigator from './Navigator/DetailWeekNavigator';
 
-import { transfers } from './data/transfers';
+import {transfers} from './data/transfers';
 import * as getData from './function/getDataWithTime';
 
-import { useSelector, useDispatch } from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 
-var detailTitle = "";
+var detailTitle = '';
 const chartConfig = {
   backgroundGradientFrom: '#fff',
   backgroundGradientTo: '#fff',
@@ -31,17 +31,30 @@ const chartConfig = {
   },
 };
 
-const ChartView = ({ pickedTime, data }) => {
+const ChartView = ({pickedTime, data}) => {
   const navigation = useNavigation();
   getData.loadData(data);
 
   const valuesDataChart = getData.getYearData(
-    getData.convertTimeFormat(pickedTime)
+    getData.convertTimeFormat(pickedTime),
   );
 
   const pickedDate = getData.convertTimeFormat(pickedTime);
-  const MonthInYear = ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"]
-  
+  const MonthInYear = [
+    'Tháng 1',
+    'Tháng 2',
+    'Tháng 3',
+    'Tháng 4',
+    'Tháng 5',
+    'Tháng 6',
+    'Tháng 7',
+    'Tháng 8',
+    'Tháng 9',
+    'Tháng 10',
+    'Tháng 11',
+    'Tháng 12',
+  ];
+
   const dataChart = {
     labels: MonthInYear,
     datasets: [
@@ -73,14 +86,16 @@ const ChartView = ({ pickedTime, data }) => {
     valuesDataChart.expense,
   );
 
-  const bestText = MonthInYear[valueDataView.bestElement] + "/" + pickedDate.getFullYear();
-  const worstText = MonthInYear[valueDataView.worstElement] + "/" + pickedDate.getFullYear();
+  const bestText =
+    MonthInYear[valueDataView.bestElement] + '/' + pickedDate.getFullYear();
+  const worstText =
+    MonthInYear[valueDataView.worstElement] + '/' + pickedDate.getFullYear();
   const averageText = pickedDate.getFullYear();
   const countTransferText = pickedDate.getFullYear();
   detailTitle = averageText.toString();
   return (
     <ScrollView style={styles.container}>
-      <ScrollView horizontal={true}>
+      {/* <ScrollView horizontal={true}>
         <LineChart
           xLabelsOffset={10}
           data={dataChart}
@@ -91,7 +106,43 @@ const ChartView = ({ pickedTime, data }) => {
           fromZero={true}
           bezier
         />
-      </ScrollView>
+      </ScrollView> */}
+      <View className="flex-row mt-4">
+        <LineChart
+          xLabelsOffset={10}
+          data={dataChart}
+          chartConfig={chartConfig}
+          width={58}
+          height={220}
+          withDots={false}
+          fromZero={true}
+          bezier
+          withVerticalLabels={false}
+        />
+        <ScrollView
+          contentContainerStyle={{flexGrow: 1}}
+          horizontal={true}
+          // className="absolute"
+        >
+          {/* <View className="abottom-0 bg-black w-[200px] h-[200px]"> */}
+
+          {/* </View> */}
+
+          <LineChart
+            xLabelsOffset={10}
+            data={dataChart}
+            chartConfig={chartConfig}
+            width={Dimensions.get('window').width * 3}
+            height={220}
+            withDots={false}
+            fromZero={true}
+            bezier
+            // withVerticalLabels={false}
+            withHorizontalLabels={false}
+            style={{marginLeft: -40}}
+          />
+        </ScrollView>
+      </View>
       <View style={styles.areaTotal}>
         <CustomTotal
           totalMoney={sumIncome}
@@ -142,30 +193,32 @@ const ChartView = ({ pickedTime, data }) => {
 
 const YearStack = createNativeStackNavigator();
 const Year = () => {
-
   const dispatch = useDispatch();
   const allData = useSelector(State => State.dataAll);
 
   return (
-    <NavigationContainer independent={true} >
+    <NavigationContainer independent={true}>
       <YearStack.Navigator
-      screenOptions={({route}) => ({
-        headerShown: true,
-        title: detailTitle,
-        headerStyle: {
-          backgroundColor: '#6c7ee1',
-        },
-        headerTintColor: 'white',
-        headerTitleAlign: 'center',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
-        statusBarColor: '#6c7ee1',
-      })}>
-        <YearStack.Screen name="ChartView" options={{ headerShown: false }}>
-        {props => <ChartView pickedTime={allData.time} data={allData} />}
+        screenOptions={({route}) => ({
+          headerShown: true,
+          title: detailTitle,
+          headerStyle: {
+            backgroundColor: '#6c7ee1',
+          },
+          headerTintColor: 'white',
+          headerTitleAlign: 'center',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          statusBarColor: '#6c7ee1',
+        })}>
+        <YearStack.Screen name="ChartView" options={{headerShown: false}}>
+          {props => <ChartView pickedTime={allData.time} data={allData} />}
         </YearStack.Screen>
-        <YearStack.Screen name="DetailWeekNavigator" component={DetailWeekNavigator} />
+        <YearStack.Screen
+          name="DetailWeekNavigator"
+          component={DetailWeekNavigator}
+        />
       </YearStack.Navigator>
     </NavigationContainer>
   );

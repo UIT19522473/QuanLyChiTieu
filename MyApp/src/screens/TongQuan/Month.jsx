@@ -1,22 +1,22 @@
-import { ScrollView, View, Text, StyleSheet } from 'react-native';
+import {ScrollView, View, Text, StyleSheet} from 'react-native';
 import React from 'react';
 
-import { COLOR } from '../sign_in/component/Color';
-import { LineChart } from 'react-native-chart-kit';
-import { Dimensions } from 'react-native';
+import {COLOR} from '../sign_in/component/Color';
+import {LineChart} from 'react-native-chart-kit';
+import {Dimensions} from 'react-native';
 
 import InfoOfAnalyze from './Components/InfoOfAnalyze';
 import CustomTotal from './Components/CustomTotal';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import DetailWeekNavigator from './Navigator/DetailWeekNavigator';
 
-import { transfers } from './data/transfers';
+import {transfers} from './data/transfers';
 import * as getData from './function/getDataWithTime';
 
-import { useSelector, useDispatch } from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 
-var detailTitle = "";
+var detailTitle = '';
 const chartConfig = {
   backgroundGradientFrom: '#fff',
   backgroundGradientTo: '#fff',
@@ -31,22 +31,23 @@ const chartConfig = {
   },
 };
 
-const ChartView = ({ pickedTime, data }) => {
+const ChartView = ({pickedTime, data}) => {
   //redux
   const navigation = useNavigation();
   getData.loadData(data);
 
-  const lastDay = getData.getLastDayOfMonth(getData.convertTimeFormat(pickedTime));
+  const lastDay = getData.getLastDayOfMonth(
+    getData.convertTimeFormat(pickedTime),
+  );
   var dayChartLabelList = [];
   for (let i = 1; i <= lastDay.getDate(); i++) {
     dayChartLabelList.push(i);
   }
 
   const valuesDataChart = getData.getMonthData(
-    getData.convertTimeFormat(pickedTime)
+    getData.convertTimeFormat(pickedTime),
   );
-  
-  
+
   const dataChart = {
     labels: dayChartLabelList,
     datasets: [
@@ -78,25 +79,63 @@ const ChartView = ({ pickedTime, data }) => {
     valuesDataChart.expense,
   );
 
-  const bestText = valueDataView.bestElement + 1 + "/" + (lastDay.getMonth() + 1) + "/" + lastDay.getFullYear();
-  const worstText = valueDataView.worstElement + 1 + "/" + (lastDay.getMonth() + 1) + "/" + lastDay.getFullYear();
-  const averageText = (lastDay.getMonth() + 1) + "/" + lastDay.getFullYear();
-  const countTransferText = (lastDay.getMonth() + 1) + "/" + lastDay.getFullYear();
+  const bestText =
+    valueDataView.bestElement +
+    1 +
+    '/' +
+    (lastDay.getMonth() + 1) +
+    '/' +
+    lastDay.getFullYear();
+  const worstText =
+    valueDataView.worstElement +
+    1 +
+    '/' +
+    (lastDay.getMonth() + 1) +
+    '/' +
+    lastDay.getFullYear();
+  const averageText = lastDay.getMonth() + 1 + '/' + lastDay.getFullYear();
+  const countTransferText =
+    lastDay.getMonth() + 1 + '/' + lastDay.getFullYear();
   detailTitle = averageText;
   return (
     <ScrollView style={styles.container}>
-      <ScrollView horizontal={true}>
+      <View className="flex-row mt-4">
         <LineChart
           xLabelsOffset={10}
           data={dataChart}
           chartConfig={chartConfig}
-          width={Dimensions.get('window').width * 3}
+          width={58}
           height={220}
           withDots={false}
           fromZero={true}
           bezier
+          withVerticalLabels={false}
         />
-      </ScrollView>
+        <ScrollView
+          contentContainerStyle={{flexGrow: 1}}
+          horizontal={true}
+          // className="absolute"
+        >
+          {/* <View className="abottom-0 bg-black w-[200px] h-[200px]"> */}
+
+          {/* </View> */}
+
+          <LineChart
+            xLabelsOffset={10}
+            data={dataChart}
+            chartConfig={chartConfig}
+            width={Dimensions.get('window').width * 3}
+            height={220}
+            withDots={false}
+            fromZero={true}
+            bezier
+            // withVerticalLabels={false}
+            withHorizontalLabels={false}
+            style={{marginLeft: -50}}
+          />
+        </ScrollView>
+      </View>
+
       <View style={styles.areaTotal}>
         <CustomTotal
           totalMoney={sumIncome}
@@ -147,7 +186,6 @@ const ChartView = ({ pickedTime, data }) => {
 
 const MonthStack = createNativeStackNavigator();
 
-
 const Month = () => {
   const dispatch = useDispatch();
 
@@ -155,7 +193,7 @@ const Month = () => {
   return (
     <NavigationContainer independent={true}>
       <MonthStack.Navigator
-        screenOptions={({ route }) => ({
+        screenOptions={({route}) => ({
           headerShown: true,
           title: detailTitle,
           headerStyle: {
@@ -168,10 +206,13 @@ const Month = () => {
           },
           statusBarColor: '#6c7ee1',
         })}>
-        <MonthStack.Screen name="ChartView" options={{ headerShown: false }}>
+        <MonthStack.Screen name="ChartView" options={{headerShown: false}}>
           {props => <ChartView pickedTime={allData.time} data={allData} />}
         </MonthStack.Screen>
-        <MonthStack.Screen name="DetailWeekNavigator" component={DetailWeekNavigator} />
+        <MonthStack.Screen
+          name="DetailWeekNavigator"
+          component={DetailWeekNavigator}
+        />
       </MonthStack.Navigator>
     </NavigationContainer>
   );

@@ -16,6 +16,7 @@ import HeaderTimeAll from '../home/HeaderTimeAll';
 
 import {useSelector, useDispatch} from 'react-redux';
 import {useEffect} from 'react';
+import AllTime from './AllTime';
 
 const Tab = createMaterialTopTabNavigator();
 const AnalyzeTab = () => {
@@ -69,9 +70,9 @@ const TongQuan = () => {
       ) : dataAll.modeTime == 2 ? (
         <Month />
       ) : dataAll.modeTime == 3 ? (
-        <Text>Năm</Text>
+        <Year/>
       ) : dataAll.modeTime == 4 ? (
-        <Text>Tất cả</Text>
+        <AllTime/>
       ) : (
         <></>
       )}

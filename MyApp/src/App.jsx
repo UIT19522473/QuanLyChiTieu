@@ -45,6 +45,7 @@ import HanMucChi from './screens/TienIch/HanMucChi/HanMucChi';
 import XuatFile from './screens/TienIch/XuatFile/XuatFile';
 import Todo from './screens/TienIch/Todo/Todo';
 import SearchValue from './screens/TienIch/SearchValue/SearchValue';
+import Currency from './screens/TienIch/Currency';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -80,6 +81,7 @@ function TienIchStackScreen() {
       <TienIchStack.Screen name="Todo" component={Todo} />
       <TienIchStack.Screen name="SearchValue" component={SearchValue} />
       <TienIchStack.Screen name="HanMuc" component={HanMuc} />
+      <TienIchStack.Screen name="Currency" component={Currency} />
     </TienIchStack.Navigator>
   );
 }

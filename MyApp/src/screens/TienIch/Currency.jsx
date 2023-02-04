@@ -1,14 +1,15 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import MoneyHeader from './CurrencyComponent/MoneyHeader'
 
-const Income = () => {
+const Currency = () => {
   return (
     <View>
-      <Text>Income</Text>
+      <MoneyHeader />
     </View>
   )
 }
 
-export default Income
+export default Currency
 
 const styles = StyleSheet.create({})

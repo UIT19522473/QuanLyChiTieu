@@ -10,15 +10,14 @@ import { FlatList } from 'react-native-gesture-handler';
 import { useSelector, useDispatch } from 'react-redux';
 import { forEach } from 'lodash';
 
-const Expense = ({ navigation, route }) => {
-  //redux
+const Income = () => {
   const dispatch = useDispatch();
   const allData = useSelector(State => State.dataAll);
   const pickedTime = allData.time;
 
   getData.loadData(allData);
-  const resultList = getData.getExpenseWeekSumCategory();
-  var sumExpense = 0;
+  const resultList = getData.getIncomeSumCategory();
+  var sumIncome = 0;
   const dataChart = [];
   const colorScale = [];
   resultList.forEach(item => {
@@ -27,12 +26,12 @@ const Expense = ({ navigation, route }) => {
       y: item.value,
     });
     colorScale.push(item.color);
-    sumExpense += item.value;
+    sumIncome += item.value;
   });
   const getHeader = () => {
     return (
       <View>
-        <DetailSumMoney money={sumExpense} />
+        <DetailSumMoney money={sumIncome} />
         <CustomDonutChart data={dataChart} colorScale={colorScale} />
       </View>
     );
@@ -47,15 +46,15 @@ const Expense = ({ navigation, route }) => {
           <CustomCategoryView
             title={item.name}
             fillColor={item.color}
-            progress={(item.value / sumExpense).toFixed(4)}
+            progress={(item.value / sumIncome).toFixed(4)}
             money={item.value}
           />
         )}
       />
     </SafeAreaView>
   );
-};
+}
 
-export default Expense;
+export default Income
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({})

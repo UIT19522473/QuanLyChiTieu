@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { ScrollView, View, Text, StyleSheet } from 'react-native';
 import React from 'react';
 
 import { COLOR } from '../sign_in/component/Color';
@@ -14,9 +14,12 @@ import DetailWeekNavigator from './Navigator/DetailWeekNavigator';
 import { transfers } from './data/transfers';
 import * as getData from './function/getDataWithTime';
 
+import { useSelector, useDispatch } from 'react-redux';
+
+var detailTitle = "";
 const chartConfig = {
   backgroundGradientFrom: '#fff',
-  backgroundGradientTo: "#fff",
+  backgroundGradientTo: '#fff',
 
   color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
   barPercentage: 0.5,
@@ -24,17 +27,23 @@ const chartConfig = {
   decimalPlaces: 0,
 
   propsForLabels: {
-    fontSize: 12
-  }
+    fontSize: 12,
+  },
+};
 
-
-}
-const ChartView = ({pickedTime }) => {
-
+const ChartView = ({ pickedTime, data }) => {
   const navigation = useNavigation();
-  const valuesDataChart = getData.getWeekData(getData.convertTimeFormat(pickedTime));
+  getData.loadData(data);
+
+  const valuesDataChart = getData.getYearData(
+    getData.convertTimeFormat(pickedTime)
+  );
+
+  const pickedDate = getData.convertTimeFormat(pickedTime);
+  const MonthInYear = ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"]
+  
   const dataChart = {
-    labels: ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ nhật"],
+    labels: MonthInYear,
     datasets: [
       {
         data: valuesDataChart.income,
@@ -44,82 +53,139 @@ const ChartView = ({pickedTime }) => {
       {
         data: valuesDataChart.expense,
         color: (opacity = 1) => `rgba(247, 85, 85,1)`, // optional
-        strokeWidth: 5 // optional
-      }
-    ]
+        strokeWidth: 5, // optional
+      },
+    ],
   };
-  const sumIncome = valuesDataChart.income.reduce((partialSum, a) => partialSum + a, 0);
-  const sumExpense = valuesDataChart.expense.reduce((partialSum, a) => partialSum + a, 0);
-  const valueDataView = getData.getCompareTime(valuesDataChart.income, valuesDataChart.expense);
 
-  const dayInWeek = ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ nhật"]
+  //Thong so view
+  const sumIncome = valuesDataChart.income.reduce(
+    (partialSum, a) => partialSum + a,
+    0,
+  );
+  const sumExpense = valuesDataChart.expense.reduce(
+    (partialSum, a) => partialSum + a,
+    0,
+  );
+
+  const valueDataView = getData.getCompareTime(
+    valuesDataChart.income,
+    valuesDataChart.expense,
+  );
+
+  const bestText = MonthInYear[valueDataView.bestElement] + "/" + pickedDate.getFullYear();
+  const worstText = MonthInYear[valueDataView.worstElement] + "/" + pickedDate.getFullYear();
+  const averageText = pickedDate.getFullYear();
+  const countTransferText = pickedDate.getFullYear();
+  detailTitle = averageText.toString();
   return (
-    <View style={styles.container}>
-      <LineChart data={dataChart}
-        chartConfig={chartConfig}
-        width={Dimensions.get("window").width}
-        height={220}
-        withDots={false}
-        // withVerticalLines={false}
-        // withHorizontalLines={false}
-        fromZero={true}
-        bezier
-      />
+    <ScrollView style={styles.container}>
+      <ScrollView horizontal={true}>
+        <LineChart
+          xLabelsOffset={10}
+          data={dataChart}
+          chartConfig={chartConfig}
+          width={Dimensions.get('window').width * 3}
+          height={220}
+          withDots={false}
+          fromZero={true}
+          bezier
+        />
+      </ScrollView>
       <View style={styles.areaTotal}>
         <CustomTotal
           totalMoney={sumIncome}
           type="INCOME"
-          onPress={() => navigation.navigate("DetailWeekNavigator",
-            {
-              screen: "Income",
-              params: { pickedTime: pickedTime }
-            })}
+          onPress={() =>
+            navigation.navigate('DetailWeekNavigator', {
+              screen: 'Income',
+            })
+          }
         />
-        <CustomTotal totalMoney={sumExpense}
+        <CustomTotal
+          totalMoney={sumExpense}
           type="EXPENSE"
-          onPress={() => navigation.navigate("DetailWeekNavigator",
-            {
-              screen: "Expense",
-              params: { pickedTime: pickedTime }
-            })}
+          onPress={() =>
+            navigation.navigate('DetailWeekNavigator', {
+              screen: 'Expense',
+            })
+          }
         />
       </View>
       <View style={styles.areaInfo}>
         <InfoOfAnalyze
-          title={'Ngày tốt nhất'}
-          money={valueDataView.bestMoney + " vnđ"}
-          date={dayInWeek[valueDataView.bestElement]}
+          title={'Tháng tốt nhất'}
+          money={valueDataView.bestMoney + ' vnđ'}
+          date={bestText}
         />
         <InfoOfAnalyze
-          title={'Trung bình'}
-          money={valueDataView.averageMoney + "vnđ"}
-          date={'2022'}
+          title={'Trung bình mỗi tháng'}
+          money={valueDataView.averageMoney + 'vnđ'}
+          date={averageText}
         />
       </View>
       <View style={styles.areaInfo}>
         <InfoOfAnalyze
-          title={'Ngày tệ nhất'}
-          money={valueDataView.worstMoney + " vnđ"}
-          date={dayInWeek[valueDataView.worstElement]}
+          title={'Tháng tệ nhất'}
+          money={valueDataView.worstMoney + ' vnđ'}
+          date={worstText}
         />
-        <InfoOfAnalyze title={'Số giao dịch'} money={valuesDataChart.count} date={'2022'} />
+        <InfoOfAnalyze
+          title={'Số giao dịch trong năm'}
+          money={valuesDataChart.count}
+          date={countTransferText}
+        />
       </View>
-    </View>
+    </ScrollView>
   );
-}
+};
 
 const YearStack = createNativeStackNavigator();
-const Year = ({ pickedTime }) => {
-    return (
-      <NavigationContainer independent={true} >
-        <YearStack.Navigator>
-          <YearStack.Screen name="ChartView" options={{ headerShown: false }}>
-            {(props) => <ChartView pickedTime={pickedTime} />}
-          </YearStack.Screen>
-          <WeekStack.Screen name="DetailWeekNavigator" component={DetailWeekNavigator} />
-        </YearStack.Navigator>
-      </NavigationContainer>
-    );
+const Year = () => {
+
+  const dispatch = useDispatch();
+  const allData = useSelector(State => State.dataAll);
+
+  return (
+    <NavigationContainer independent={true} >
+      <YearStack.Navigator
+      screenOptions={({route}) => ({
+        headerShown: true,
+        title: detailTitle,
+        headerStyle: {
+          backgroundColor: '#6c7ee1',
+        },
+        headerTintColor: 'white',
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+        statusBarColor: '#6c7ee1',
+      })}>
+        <YearStack.Screen name="ChartView" options={{ headerShown: false }}>
+        {props => <ChartView pickedTime={allData.time} data={allData} />}
+        </YearStack.Screen>
+        <YearStack.Screen name="DetailWeekNavigator" component={DetailWeekNavigator} />
+      </YearStack.Navigator>
+    </NavigationContainer>
+  );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    backgroundColor: 'white',
+    height: '100%',
+  },
+  areaTotal: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  areaInfo: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+});
 
 export default Year;

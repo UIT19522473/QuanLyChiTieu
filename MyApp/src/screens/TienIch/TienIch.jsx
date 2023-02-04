@@ -7,6 +7,8 @@ import {useContext} from 'react';
 import {writeFile, readFile, DownloadDirectoryPath} from 'react-native-fs';
 import XLSX from 'xlsx';
 
+import Currency from './Currency';
+
 const TienIch = ({navigation}) => {
   const {signOutMain} = useContext(AuthContext);
 
@@ -85,7 +87,8 @@ const TienIch = ({navigation}) => {
             Việc hôm nay
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity className="w-[150px] h-[150px] border-[1px] rounded-3xl border-red-500 justify-center items-center">
+        <TouchableOpacity className="w-[150px] h-[150px] border-[1px] rounded-3xl border-red-500 justify-center items-center"
+        onPress={() => navigation.navigate('Currency')}>
           <Icon size={46} name="search" color="red" />
           <Text className="mt-4 text-base font-semibold text-gray-500">
             Tra cứu tỷ giá

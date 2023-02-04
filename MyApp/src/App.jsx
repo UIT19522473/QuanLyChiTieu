@@ -41,6 +41,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import HeaderTimeAll from './screens/home/HeaderTimeAll';
 
 import TienIch from './screens/TienIch/TienIch';
+import Currency from './screens/TienIch/Currency';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -72,6 +73,7 @@ function TienIchStackScreen() {
       screenOptions={{headerShown: false, tabBarStyle: {display: 'none'}}}>
       <TienIchStack.Screen name="TienIchHome" component={TienIch} />
       <TienIchStack.Screen name="HanMuc" component={HanMuc} />
+      <TienIchStack.Screen name="Currency" component={Currency}/>
     </TienIchStack.Navigator>
   );
 }

@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet} from 'react-native';
+import {ScrollView,View, Text, StyleSheet} from 'react-native';
 import React from 'react';
 
 import {COLOR} from '../sign_in/component/Color';
@@ -16,6 +16,7 @@ import * as getData from './function/getDataWithTime';
 
 import {useSelector, useDispatch} from 'react-redux';
 
+var detailTitle = "";
 const chartConfig = {
   backgroundGradientFrom: '#fff',
   backgroundGradientTo: '#fff',
@@ -34,8 +35,7 @@ const ChartView = ({pickedTime, data}) => {
   const navigation = useNavigation();
   getData.loadData(data);
   const valuesDataChart = getData.getWeekData(
-    getData.convertTimeFormat(pickedTime),
-    data,
+    getData.convertTimeFormat(pickedTime)
   );
   const dataChart = {
     labels: ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ nhật'],
@@ -74,8 +74,16 @@ const ChartView = ({pickedTime, data}) => {
     'Thứ 7',
     'Chủ nhật',
   ];
+
+  const currMonday = getData.getMonday(getData.convertTimeFormat(pickedTime));
+  const mondayText = currMonday.getDate() + "/" + currMonday.getMonth() + 1 + "/" + currMonday.getFullYear();
+  const currSunday = new Date(currMonday.getTime() + 86400000 * 6);
+  const sundayText = currSunday.getDate() + "/" + (currSunday.getMonth() + 1) + "/" + currSunday.getFullYear();
+  console.log(currSunday);
+  const averageText = mondayText + "-" + sundayText;
+  detailTitle = averageText;
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <LineChart
         data={dataChart}
         chartConfig={chartConfig}
@@ -116,7 +124,7 @@ const ChartView = ({pickedTime, data}) => {
         <InfoOfAnalyze
           title={'Trung bình'}
           money={valueDataView.averageMoney + 'vnđ'}
-          date={'2022'}
+          date={averageText}
         />
       </View>
       <View style={styles.areaInfo}>
@@ -128,16 +136,16 @@ const ChartView = ({pickedTime, data}) => {
         <InfoOfAnalyze
           title={'Số giao dịch'}
           money={valuesDataChart.count}
-          date={'2022'}
+          date={averageText}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
 const WeekStack = createNativeStackNavigator();
 
-const Week = ({pickedTime}) => {
+const Week = () => {
   const dispatch = useDispatch();
 
   //all data
@@ -150,7 +158,7 @@ const Week = ({pickedTime}) => {
       <WeekStack.Navigator
         screenOptions={({route}) => ({
           headerShown: true,
-          title: 'Tuần này',
+          title: detailTitle,
           headerStyle: {
             backgroundColor: '#6c7ee1',
           },

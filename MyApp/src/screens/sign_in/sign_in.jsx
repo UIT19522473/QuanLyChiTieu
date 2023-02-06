@@ -224,6 +224,7 @@ const SignIn = ({navigation}) => {
       />
 
       <TextInput
+        secureTextEntry={true}
         className="w-[300px] h-[50px] border-[1px] rounded-xl p-4 mb-3"
         placeholder="Mật khẩu"
         onChangeText={setPass}
@@ -240,14 +241,14 @@ const SignIn = ({navigation}) => {
         <TouchableOpacity
           onPress={() => navigation.navigate('SignUp')}
           style={{color: COLOR.appColor}}>
-          <Text>Dang Ky</Text>
+          <Text>Đăng ký</Text>
         </TouchableOpacity>
       </View>
       {/* <CustomButton /> */}
       <TouchableOpacity
         onPress={handleSignIn}
         className="mt-4 w-72 h-16 items-center justify-center rounded-3xl bg-green-600">
-        <Text className="text-lg font-bold text-slate-100">Dang Nhap</Text>
+        <Text className="text-lg font-bold text-slate-100">Đăng nhập</Text>
       </TouchableOpacity>
     </View>
   );

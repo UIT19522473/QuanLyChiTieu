@@ -23,7 +23,7 @@ const CustomTotal = ({totalMoney, type, onPress}) => {
             styles[`bgIcon_${type}`],
           ]}>
           <Icon
-            name={type === 'INCOME' ? 'arrow-upward' : 'arrow-downward'}
+            name={type === 'INCOME' ? 'arrow-downward' : 'arrow-upward'}
             size={13}
             color={'white'}
           />

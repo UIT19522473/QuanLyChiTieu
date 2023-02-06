@@ -58,7 +58,7 @@ const SignUp = ({navigation}) => {
           fontWeight: 'bold',
           marginVertical: 20,
         }}>
-        Đăng ky
+        Đăng ký
       </Text>
 
       <Text
@@ -96,6 +96,7 @@ const SignUp = ({navigation}) => {
         placeholder="Mật khẩu"
         onChangeText={setPass}
         value={pass}
+        secureTextEntry={true}
       />
 
       <TextInput
@@ -103,18 +104,19 @@ const SignUp = ({navigation}) => {
         placeholder="Nhập lại mật khẩu"
         onChangeText={setRePass}
         value={rePass}
+        secureTextEntry={true}
       />
 
       <TouchableOpacity
         onPress={handleSigUp}
         className="mt-4 w-72 h-16 items-center justify-center rounded-3xl bg-green-600">
-        <Text className="text-lg font-bold text-slate-100">Dang Ky</Text>
+        <Text className="text-lg font-bold text-slate-100">Đăng ký</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         onPress={() => navigation.navigate('SignIn')}
-        className="mt-4 w-72 h-16 items-center justify-center rounded-3xl bg-green-600">
-        <Text className="text-lg font-bold text-slate-100">Dang Nhap</Text>
+        className="mt-4 w-72 h-16 items-center justify-center rounded-3xl border-4 border-green-500">
+        <Text className="text-lg font-bold text-gray-600">Đăng nhập</Text>
       </TouchableOpacity>
     </View>
   );

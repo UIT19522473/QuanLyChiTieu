@@ -96,13 +96,13 @@ const Home = ({navigation}) => {
   const actions = [
     {
       text: 'Danh mục mới',
-      // icon: require('./images/ic_accessibility_white.png'),
+      icon: require('../../data/img/cart-removebg-preview.png'),
       name: 'DanhMuc',
       position: 2,
     },
     {
       text: 'Thêm chi tiêu',
-      // icon: require('./images/ic_language_white.png'),
+      icon: require('../../data/img/icon.png'),
       name: 'ThuChi',
       position: 1,
     },

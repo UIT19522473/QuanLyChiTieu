@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     // paddingVertical: 1,
-    height: 65,
+    height: 85,
     paddingHorizontal: 10,
     paddingVertical: 10,
     marginTop: 3,

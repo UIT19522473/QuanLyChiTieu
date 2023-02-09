@@ -10,6 +10,7 @@ import {
   addColorCurrentItem,
   addIconCurrentItem,
   addValueCurrentItem,
+  addItemEdit,
 } from '../../redux/slice/currentItemSlice/currentItemSlice';
 
 const ChooseItem = props => {
@@ -75,11 +76,23 @@ const ChooseItem = props => {
     if (type === 'close') {
       props.setModalVisible(!props.isModalVisible);
     } else {
-      dispatch(addIdCurrentItem(id));
-      dispatch(addNameCurrentItem(name));
-      dispatch(addColorCurrentItem(color));
-      dispatch(addIconCurrentItem(icon));
-      dispatch(addValueCurrentItem(value));
+      if (props.edit) {
+        dispatch(
+          addItemEdit({
+            id: id,
+            name: name,
+            color: color,
+            icon: icon,
+            value: value,
+          }),
+        );
+      } else {
+        dispatch(addIdCurrentItem(id));
+        dispatch(addNameCurrentItem(name));
+        dispatch(addColorCurrentItem(color));
+        dispatch(addIconCurrentItem(icon));
+        dispatch(addValueCurrentItem(value));
+      }
       props.setModalVisible(!props.isModalVisible);
     }
   };

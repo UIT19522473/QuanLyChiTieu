@@ -3,7 +3,12 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useSelector, useDispatch} from 'react-redux';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {useState} from 'react';
+import {useState, useRef} from 'react';
+import RBSheet from 'react-native-raw-bottom-sheet';
+import DetailTransfer from './DetailTransfer';
+
+import * as getSubTrans from '../../screens/FunctionGlobal/getSubTransfer';
+import * as convertTime from '../../screens/FunctionGlobal/convertTimeByString';
 
 //function compare to sort array
 function compare(a, b) {
@@ -40,11 +45,16 @@ function compare(a, b) {
 
 const ItemDetail = ({data}) => {
   const time = data.time.split('/');
+  const refRBSheet = useRef();
   return (
-    <TouchableOpacity className="flex-row items-center p-4 bg-slate-200 mb-2">
+    <TouchableOpacity
+      onPress={() => refRBSheet.current.open()}
+      className="flex-row items-center p-4 bg-slate-200 mb-2">
       <Text className="text-2xl font-bold text-primary">{time[0]}</Text>
       <View className="ml-4">
-        <Text className="text-base font-bold text-slate-600">hôm nay</Text>
+        <Text className="text-base font-bold text-slate-600">
+          {convertTime.dayOfWeek(data.time)}
+        </Text>
         <Text className="text-base font-bold text-primary">
           tháng {time[1] + '/' + time[2]}
         </Text>
@@ -63,6 +73,27 @@ const ItemDetail = ({data}) => {
           <></>
         )}
       </View>
+
+      <RBSheet
+        ref={refRBSheet}
+        closeOnDragDown={true}
+        closeOnPressMask={true}
+        height={400}
+        customStyles={{
+          wrapper: {
+            backgroundColor: 'transparent',
+          },
+          draggableIcon: {
+            backgroundColor: '#000',
+          },
+        }}>
+        {/* {typeModal === 'edit' ? (
+          <BtsHomeItem moveScreen={props.moveScreen} />
+        ) : (
+          <AddTransferHome />
+        )} */}
+        <DetailTransfer data={data} refRBSheet={refRBSheet} />
+      </RBSheet>
     </TouchableOpacity>
   );
 };
@@ -71,15 +102,28 @@ const ModalDetailItem = props => {
   const dispatch = useDispatch();
 
   const dataAll = useSelector(State => State.dataAll);
+  const timeCurrent = useSelector(State => State.currentTime);
+
+  const subTrans = getSubTrans.getSubTrans(dataAll, timeCurrent, props.id);
+
   const subTransfer = useSelector(state => state.subTransferItem.arr);
+  let money = 0;
+  subTransfer.map(item => {
+    // console.log(item.value);
+    money += item.value;
+  });
+
+  let moneyTrans = 0;
+  subTrans.map(item => {
+    // console.log(item.value);
+    moneyTrans += item.value;
+  });
+
   const subTransferSlice = subTransfer.slice();
   subTransferSlice.sort(compare);
 
-  // let money = 0;
-  // money = subTransferSlice.map(item => {
-  //   console.log(item.value);
-  //   money += item.value;
-  // });
+  subTrans.sort(compare);
+
   // console.log('log...', subTransferSlice);
 
   const ItemCurrent = useSelector(State => State.currentItem);
@@ -92,9 +136,11 @@ const ModalDetailItem = props => {
       <View className="flex-row items-center justify-center mb-6">
         <View className="flex justify-center items-center  w-[90px]">
           <View
-            style={{backgroundColor: ItemCurrent.color}}
+            // style={{backgroundColor: ItemCurrent.color}}
+            style={{backgroundColor: props.item.color}}
             className="p-3 rounded-full">
-            <Icon size={22} name={ItemCurrent.icon} color={'white'} />
+            {/* <Icon size={22} name={ItemCurrent.icon} color={'white'} /> */}
+            <Icon size={22} name={props.item.icon} color={'white'} />
           </View>
         </View>
 
@@ -102,21 +148,23 @@ const ModalDetailItem = props => {
         <Text
           numberOfLines={1}
           className="text-xl font-bold text-slate-900  max-w-[220px]">
-          {ItemCurrent.name}
+          {/* {ItemCurrent.name} */}
+          {props.item.name}
         </Text>
         {/* </View> */}
       </View>
 
       <View className="flex-row justify-center items-center mb-4">
         <Text className="text-xl font-bold ">
-          {ItemCurrent.type === 'thu' ? 'Tổng thu' : 'Tổng chi'}
+          {props.item.type === 'thu' ? 'Tổng thu' : 'Tổng chi'}
         </Text>
         <Text
           style={{
-            color: ItemCurrent.type === 'chi' ? 'red' : 'green',
+            color: props.item.type === 'chi' ? 'red' : 'green',
           }}
           className="ml-4 text-2xl font-bold">
-          {ItemCurrent.value}
+          {/* {money} */}
+          {moneyTrans}
         </Text>
       </View>
 
@@ -137,7 +185,12 @@ const ModalDetailItem = props => {
       </View> */}
 
       <View>
-        {subTransferSlice.map(item => (
+        {/* {subTransferSlice.map(item => (
+          // <Text>{item.id}</Text>
+          <ItemDetail data={item} />
+        ))} */}
+
+        {subTrans.map(item => (
           // <Text>{item.id}</Text>
           <ItemDetail data={item} />
         ))}

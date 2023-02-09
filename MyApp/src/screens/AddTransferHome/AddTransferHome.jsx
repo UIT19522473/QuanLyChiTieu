@@ -256,10 +256,6 @@ const AddTransferHome = () => {
             user: userName,
           }),
         );
-
-        // currentItem.type === 'thu'
-        //   ? dispatch(updateBlankIn(result - 0))
-        //   : dispatch(updateBlankOut(result - 0));
       });
   };
   return (
@@ -275,6 +271,7 @@ const AddTransferHome = () => {
 
         <View className="flex flex-col h-5/6 w-full bg-white absolute">
           <ChooseItem
+            edit={false}
             isModalVisible={isModalVisible}
             setModalVisible={setModalVisible}
             toggleModal={toggleModal}

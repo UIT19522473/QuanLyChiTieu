@@ -11,6 +11,7 @@ import {useState} from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useSelector, useDispatch} from 'react-redux';
 import HeaderTimeAll from '../home/HeaderTimeAll';
+import * as convertTime from '../../screens/FunctionGlobal/convertTimeByString';
 
 const RowItem = ({allData, item}) => {
   // console.log('arrItems', arrItems);
@@ -119,7 +120,8 @@ const RowHistory = ({time, allData}) => {
           </Text>
           <View>
             <Text className="text-base font-bold text-zinc-500">
-              {dayOfWeek}
+              {/* {dayOfWeek} */}
+              {convertTime.dayOfWeek(time)}
             </Text>
             <Text style={{color: colorDate}} className="font-bold text-base">
               Tháng {timeValue[1] + '/' + timeValue[2]}

@@ -13,6 +13,8 @@ export const currentItem = createSlice({
     time: '22/12/2022',
     type: 'thu',
     user: '',
+
+    itemEdit: {},
   },
   reducers: {
     addCurrentItem: (state, action) => {
@@ -51,6 +53,10 @@ export const currentItem = createSlice({
     addTimeCurrentItem: (state, action) => {
       state.time = action.payload;
     },
+
+    addItemEdit: (state, action) => {
+      state.itemEdit = action.payload;
+    },
   },
 });
 
@@ -63,6 +69,7 @@ export const {
   addNameCurrentItem,
   addTimeCurrentItem,
   addValueCurrentItem,
+  addItemEdit,
 } = currentItem.actions;
 
 export default currentItem.reducer;

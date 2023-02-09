@@ -4,7 +4,10 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {useRef, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {addCurrentItem} from '../../redux/slice/currentItemSlice/currentItemSlice';
+import {
+  addCurrentItem,
+  addItemEdit,
+} from '../../redux/slice/currentItemSlice/currentItemSlice';
 // import AddTransferHome from '../../screens/AddTransferHome';
 import AddTransferHome from '../../screens/AddTransferHome/AddTransferHome';
 
@@ -234,6 +237,7 @@ const HomeItem = props => {
     setHeight(300);
     setTypeModal('edit');
     dispatch(addCurrentItem({value, name, color, icon, id, type}));
+    dispatch(addItemEdit({value, name, color, icon, id, type}));
     refRBSheet.current.open();
   };
 
@@ -270,7 +274,7 @@ const HomeItem = props => {
           },
         }}>
         {typeModal === 'edit' ? (
-          <BtsHomeItem moveScreen={props.moveScreen} />
+          <BtsHomeItem moveScreen={props.moveScreen} id={id} />
         ) : (
           <AddTransferHome />
         )}

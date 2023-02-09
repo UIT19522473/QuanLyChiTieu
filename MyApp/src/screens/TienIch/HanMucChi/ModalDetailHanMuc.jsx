@@ -6,10 +6,10 @@ import {
   ScrollView,
   Switch,
   ToastAndroid,
+  Alert,
 } from 'react-native';
 import React, {useEffect} from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import Modal from 'react-native-modal';
 import {useState} from 'react';
 import DateTimePicker1 from '@react-native-community/datetimepicker';
 import DateTimePicker2 from '@react-native-community/datetimepicker';
@@ -26,8 +26,11 @@ import {
 
 // import CheckBox from '@react-native-community/checkbox';
 import firestore from '@react-native-firebase/firestore';
-import {addHanMuc} from '../../../redux/slice/dataAllSlice/dataAllSlice';
-import ModalDetailHanMuc from './ModalDetailHanMuc';
+import {
+  addHanMuc,
+  updateTichHanMuc,
+  updateHanMuc,
+} from '../../../redux/slice/dataAllSlice/dataAllSlice';
 
 const ItemMenu = props => {
   const dispatch = useDispatch();
@@ -46,7 +49,14 @@ const ItemMenu = props => {
   const toggleTick = () => {
     setToggleCheckBox(!toggleCheckBox);
     // chooseCurrent.tick = !toggleCheckBox;
-    dispatch(updateTick({id: chooseCurrent.id, tick: !toggleCheckBox}));
+    //   dispatch(updateTick({ id: chooseCurrent.id, tick: !toggleCheckBox }));
+    dispatch(
+      updateTichHanMuc({
+        id: chooseCurrent.id,
+        tick: !toggleCheckBox,
+        idHanMuc: props.idHanMuc,
+      }),
+    );
     // console.log(chooseCurrent.tick);
   };
 
@@ -66,12 +76,12 @@ const ItemMenu = props => {
         onPress={toggleTick}
         className="h-[18px] w-[18px] border-[1px] rounded-sm justify-center items-center">
         {/* {toggleCheckBox && (
-          <View className="bg-green-600 flex-1 w-full justify-center items-center">
-            <Icon name="done" color={'white'} size={14} />
-          </View>
-        )} */}
+            <View className="bg-green-600 flex-1 w-full justify-center items-center">
+              <Icon name="done" color={'white'} size={14} />
+            </View>
+          )} */}
 
-        {chooseCurrent.tick && (
+        {props.item.tick && (
           <View className="bg-green-600 flex-1 w-full justify-center items-center">
             <Icon name="done" color={'white'} size={14} />
           </View>
@@ -81,151 +91,7 @@ const ItemMenu = props => {
   );
 };
 
-const getDayBetween = timeEnd => {
-  const stringSplit = timeEnd.split('/');
-
-  const timeE = new Date(
-    parseInt(stringSplit[2]),
-    parseInt(stringSplit[1]) - 1,
-    parseInt(stringSplit[0]),
-  );
-
-  const timeNow = new Date();
-
-  let difference = timeE.getTime() - timeNow.getTime();
-  let TotalDays = Math.ceil(difference / (1000 * 3600 * 24));
-  return TotalDays;
-};
-
-const convertStringToDate = str => {
-  const stringSplit = str.split('/');
-
-  const timeE = new Date(
-    parseInt(stringSplit[2]),
-    parseInt(stringSplit[1]) - 1,
-    parseInt(stringSplit[0]),
-  );
-  return timeE;
-};
-
-const getMoneyBetween = (HanMuc, allData) => {
-  let chooseHaveNow = [];
-  allData.arrItem.map(item => {
-    chooseHaveNow.push(item.id);
-  });
-
-  let arrIdArrChoose = [];
-  HanMuc.arrChoose.map(item => {
-    if (item.tick && chooseHaveNow.includes(item.id)) {
-      arrIdArrChoose.push(item.id);
-    }
-  });
-
-  // console.log(arrIdArrChoose);
-  let value = 0;
-
-  const strSplitStart = HanMuc.timeStart.split('/');
-  const strSplitEnd = HanMuc.timeEnd.split('/');
-  const timeS = new Date(
-    parseInt(strSplitStart[2]),
-    parseInt(strSplitStart[1]) - 1,
-    parseInt(strSplitStart[0]),
-  );
-  const timeE = new Date(
-    parseInt(strSplitEnd[2]),
-    parseInt(strSplitEnd[1]) - 1,
-    parseInt(strSplitEnd[0]),
-  );
-
-  const timeNow = new Date();
-
-  allData.arrTrans.map(trans => {
-    if (
-      arrIdArrChoose.includes(trans.idItem) &&
-      // timeNow.getTime() >= timeS.getTime() &&
-      // timeNow.getTime() <= timeE.getTime() &&
-      convertStringToDate(trans.time).getTime() >= timeS.getTime() &&
-      convertStringToDate(trans.time).getTime() <= timeE.getTime()
-    ) {
-      value += trans.value;
-    }
-  });
-  return value;
-};
-
-const convertNumberToStringPercent = (num1, num2) => {
-  const percentNumber = ((num1 / num2) * 100).toFixed(2);
-  const percentString = percentNumber <= 100 ? percentNumber + '%' : '100%';
-  return percentString;
-};
-
-const ItemHanMuc = ({data}) => {
-  const dispatch = useDispatch();
-  const dataAll = useSelector(State => State.dataAll);
-
-  const percent = convertNumberToStringPercent(
-    getMoneyBetween(data, dataAll),
-    data.money,
-  );
-
-  const [modeModal, setModeModal] = useState(false);
-  const toggleModal = () => {
-    setModeModal(!modeModal);
-  };
-
-  return (
-    <TouchableOpacity
-      onPress={toggleModal}
-      className="p-4 border-b-[1px] border-zinc-400 mb-4">
-      <View className="flex-row mb-6 items-center">
-        <View className="p-2 rounded-full border-green-600 border-[2px]">
-          <Icon name="payments" size={28} color="green" />
-        </View>
-        <View className="ml-4">
-          <Text className="text-gray-900 text-lg font-bold">{data.name}</Text>
-          <Text className="text-sm text-gray-600">
-            {data.timeStart} - {data.timeEnd}
-          </Text>
-        </View>
-        <View className="ml-auto">
-          <Text className="text-xl text-primary font-bold">{data.money} đ</Text>
-        </View>
-      </View>
-      <View className="w-full h-[10px] rounded-xl bg-slate-300 mb-2 relative mt-4">
-        <View
-          style={{width: percent, backgroundColor: 'red'}}
-          className="h-[10px] rounded-xl"></View>
-        {percent === '100%' ? (
-          <Text className="absolute right-0 -top-6 italic">
-            (Bội chi){' '}
-            <Text className="italic text-red-600">
-              {getMoneyBetween(data, dataAll) - data.money}
-            </Text>
-          </Text>
-        ) : (
-          <></>
-        )}
-      </View>
-      <View className="justify-between flex-row">
-        <Text className="text-base text-gray-600">
-          Còn {getDayBetween(data.timeEnd)} ngày
-        </Text>
-        <Text className="text-base text-gray-900 font-bold">
-          {getMoneyBetween(data, dataAll)} đ
-        </Text>
-      </View>
-
-      <Modal className="flex justify-center items-center" isVisible={modeModal}>
-        <TouchableOpacity
-          className="flex-1 w-full relative"
-          onPress={toggleModal}></TouchableOpacity>
-        <ModalDetailHanMuc toggleModal={toggleModal} data={data} />
-      </Modal>
-    </TouchableOpacity>
-  );
-};
-
-const ModalAddHanMuc = ({toggleModal}) => {
+const ModalDetailHanMuc = ({toggleModal, data}) => {
   const dispatch = useDispatch();
   const allData = useSelector(State => State.dataAll);
   const auth = useSelector(State => State.auth);
@@ -238,6 +104,71 @@ const ModalAddHanMuc = ({toggleModal}) => {
 
   const [date2, setDate2] = useState(new Date());
   const [show2, setShow2] = useState(false);
+  const [dataBack, setDataBack] = useState({});
+  const [arrChooseBack, setArrChooseBack] = useState([]);
+
+  useEffect(() => {
+    const currentDateStart = data.timeStart.split('/');
+    const currentDateEnd = data.timeEnd.split('/');
+    // setShow2(false);
+
+    const DateStart = new Date(
+      parseInt(currentDateStart[2]),
+      parseInt(currentDateStart[1]) - 1,
+      parseInt(currentDateStart[0]),
+    );
+    const DateEnd = new Date(
+      parseInt(currentDateEnd[2]),
+      parseInt(currentDateEnd[1]) - 1,
+      parseInt(currentDateEnd[0]),
+    );
+
+    setDate(DateStart);
+    setDate2(DateEnd);
+
+    let tempDate = new Date(DateStart);
+    let fDate =
+      // tempDate.getDay() +
+      // '/' +
+      tempDate.getDate() +
+      '/' +
+      (tempDate.getMonth() + 1) +
+      '/' +
+      tempDate.getFullYear();
+
+    let tempDate2 = new Date(DateEnd);
+    let fDate2 =
+      // tempDate.getDay() +
+      // '/' +
+      tempDate2.getDate() +
+      '/' +
+      (tempDate2.getMonth() + 1) +
+      '/' +
+      tempDate2.getFullYear();
+
+    setText2(fDate2);
+
+    setText(fDate);
+
+    //---------------------------
+    setName(data.name);
+    setValue(data.money + '');
+
+    let arrChooseB = [];
+    data.arrChoose.map(item => {
+      arrChooseB.push(item);
+    });
+    setArrChooseBack(arrChooseB);
+    setDataBack({
+      arrChoose: arrChooseBack,
+      id: data.id,
+      money: data.money,
+      name: data.name,
+      timeEnd: data.timeEnd,
+      timeStart: data.timeStart,
+      user: data.user,
+    });
+  }, []);
 
   const [text, setText] = useState(
     // '',
@@ -315,67 +246,68 @@ const ModalAddHanMuc = ({toggleModal}) => {
     setIsEnabled(!isEnabled);
     // console.log('switch', HanMucAdd.switchAll);
   };
+  // const auth = useSelector(State=>State.auth)
+
+  const handleDeleteHanMuc = () => {
+    Alert.alert('Xóa hạn mức', 'Bạn có chắc muốn xóa hạn mức này ?', [
+      {
+        text: 'Hủy',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {
+        text: 'Đồng ý',
+        // onPress: () => handleRemoveTransfer(),
+      },
+    ]);
+  };
 
   const handleCreateHanMuc = () => {
-    console.log('Save Han muc');
+    // console.log('Save Han muc', data);
+
+    const hanMucAdd = {
+      id: data.id,
+      money: value,
+      name: name,
+      timeStart: text,
+      timeEnd: text2,
+      user: auth.userName,
+      arrChoose: data.arrChoose,
+    };
+    console.log('HanMuc', hanMucAdd);
 
     //arrItemChoose
-    const arrChoose = HanMucAdd.arrChoose.filter(item => item.tick === true);
+    // const arrChoose = HanMucAdd.arrChoose.filter(item => item.tick === true);
 
-    //function firebase add Han muc
-    if (arrChoose.length > 0) {
-      const id = new Date().getTime();
+    // //function firebase add Han muc
+    if (value !== '') {
+      // const id = new Date().getTime();
       firestore()
         .collection('HanMuc')
-        .doc('' + id)
-        .set({
-          id: id,
-          money: parseInt(value),
+        .doc('' + data.id)
+        .update({
+          id: data.id,
+          money: value,
           name: name,
-          arrChoose: HanMucAdd.arrChoose,
-          timeStart:
-            text == 'Empty'
-              ? date.getDate() +
-                '/' +
-                (date.getMonth() + 1) +
-                '/' +
-                date.getFullYear()
-              : text,
-          timeEnd:
-            text2 == 'Empty'
-              ? date2.getDate() +
-                '/' +
-                (date2.getMonth() + 1) +
-                '/' +
-                date2.getFullYear()
-              : text2,
+          timeStart: text,
+          timeEnd: text2,
           user: auth.userName,
+          arrChoose: data.arrChoose,
         })
         .then(() => {
           console.log('item added!');
           dispatch(
-            addHanMuc({
-              id: id,
-              money: parseInt(value),
-              name: name,
-              arrChoose: HanMucAdd.arrChoose,
-              timeStart:
-                text == 'Empty'
-                  ? date.getDate() +
-                    '/' +
-                    (date.getMonth() + 1) +
-                    '/' +
-                    date.getFullYear()
-                  : text,
-              timeEnd:
-                text2 == 'Empty'
-                  ? date2.getDate() +
-                    '/' +
-                    (date2.getMonth() + 1) +
-                    '/' +
-                    date2.getFullYear()
-                  : text2,
-              user: auth.userName,
+            updateHanMuc({
+              id: data.id,
+              hanMucAdd: {
+                id: data.id,
+                money: value,
+                name: name,
+                timeStart: text,
+                timeEnd: text2,
+                user: auth.userName,
+                arrChoose: data.arrChoose,
+              },
             }),
           );
 
@@ -391,10 +323,29 @@ const ModalAddHanMuc = ({toggleModal}) => {
     }
   };
 
+  let itemHaveNow = [];
+  allData.arrItem.map(item => {
+    itemHaveNow.push(item.id);
+  });
+
+  const closeModal = () => {
+    toggleModal();
+    arrChooseBack.map(item => {
+      dispatch(
+        updateTichHanMuc({
+          id: item.id,
+          tick: item.tick,
+          idHanMuc: data.id,
+        }),
+      );
+    });
+    console.log('back data', dataBack);
+  };
+
   return (
     <View className=" flex flex-col h-[90%] w-full bg-white absolute">
       <View className="flex items-center justify-center p-2 border-b-[1px] mb-2">
-        <Text className="text-lg font-bold">Thêm hạn mức</Text>
+        <Text className="text-lg font-bold">Hạn mức: {data.name}</Text>
       </View>
       <View>
         <View className="p-4">
@@ -456,9 +407,9 @@ const ModalAddHanMuc = ({toggleModal}) => {
               className="max-h-[140px] p-2"
               contentContainerStyle={{flexGrow: 1}}>
               <View className="p-4">
-                {allData.arrItem.map((item, index) =>
-                  item.type == 'chi' ? (
-                    <ItemMenu item={item} key={index} />
+                {data.arrChoose.map((item, index) =>
+                  itemHaveNow.includes(item.id) ? (
+                    <ItemMenu item={item} key={index} idHanMuc={data.id} />
                   ) : (
                     <></>
                   ),
@@ -528,85 +479,47 @@ const ModalAddHanMuc = ({toggleModal}) => {
           />
         )}
       </View>
-
+      {/* 
       <View className="flex flex-row justify-end gap-12 mb-3 mx-6 mt-auto">
-        <TouchableOpacity onPress={toggleModal}>
+        <TouchableOpacity
+          //   onPress={toggleModal}
+          onPress={() => closeModal()}>
           <Text className="text-lg font-bold text-red-500 mr-4">Hủy</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={handleCreateHanMuc}>
           <Text className="text-lg font-bold text-blue-500">Lưu</Text>
         </TouchableOpacity>
-      </View>
-    </View>
-  );
-};
+      </View> */}
 
-const HanMucChi = ({navigation}) => {
-  const dispatch = useDispatch();
-  const [modeModal, setModeModal] = useState(false);
-  const toggleModal = () => {
-    setModeModal(!modeModal);
-  };
-  const allData = useSelector(State => State.dataAll);
-  const HanMucAdd = useSelector(State => State.HanMucAdd);
-  useEffect(() => {
-    dispatch(addSwitchAll(false));
-    dispatch(clearArrChoose());
-    allData.arrItem.map(item => {
-      if (item.type === 'chi') {
-        dispatch(
-          addArrChoose({
-            id: item.id,
-            name: item.name,
-            icon: item.icon,
-            color: item.color,
-            tick: false,
-          }),
-        );
-      }
-    });
-  }, []);
-
-  // console.log('Han muc add', HanMucAdd.arrChoose);
-  // console.log('Item', allData.arrItem.length);
-
-  return (
-    <View className="flex-1">
-      <View className="flex-row items-center justify-between bg-primary p-2 py-4">
-        <TouchableOpacity onPress={() => navigation.navigate('TienIchHome')}>
-          <Icon name="arrow-back" size={32} color="white" />
-        </TouchableOpacity>
-        <View className="items-center">
-          <Text className="text-gray-50 font-bold text-2xl">Hạn mức chi</Text>
-        </View>
-
-        <TouchableOpacity onPress={toggleModal}>
-          <Icon name="add" size={32} color="white" />
-        </TouchableOpacity>
-      </View>
-
-      <ScrollView contentContainerStyle={{flexGrow: 1}}>
-        {/* <ItemHanMuc /> */}
-        {/* <ItemHanMuc />
-        <ItemHanMuc />
-        <ItemHanMuc />
-        <ItemHanMuc />
-        <ItemHanMuc /> */}
-
-        {allData.arrHanMuc.map(item => (
-          <ItemHanMuc data={item} />
-        ))}
-      </ScrollView>
-
-      <Modal className="flex justify-center items-center" isVisible={modeModal}>
+      <View className="flex-row justify-around mt-auto mb-8">
         <TouchableOpacity
-          className="flex-1 w-full relative"
-          onPress={toggleModal}></TouchableOpacity>
-        <ModalAddHanMuc toggleModal={toggleModal} />
-      </Modal>
+          onPress={() => handleDeleteHanMuc()}
+          className="flex-col justify-center items-center">
+          <View className="mb-[1px] w-[40px] h-[40px] bg-red-300 rounded-full justify-center items-center">
+            <Icon name="delete-sweep" size={24} color={'#c92424'} />
+          </View>
+          <Text className="text-xs font-semibold text-gray">Xóa</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={handleCreateHanMuc}
+          className="flex-col justify-center items-center">
+          <View className="mb-[1px] w-[40px] h-[40px] bg-blue-300 rounded-full justify-center items-center">
+            <Icon name="save" size={24} color="blue" />
+          </View>
+          <Text className="text-xs font-semibold text-gray">Lưu</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => closeModal()}
+          className="flex-col justify-center items-center">
+          <View className="mb-[1px] w-[40px] h-[40px] bg-orange-300 rounded-full justify-center items-center">
+            <Icon name="close" size={24} color={'yellow'} />
+          </View>
+          <Text className="text-xs font-semibold text-gray">Hủy</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
-export default HanMucChi;
+export default ModalDetailHanMuc;

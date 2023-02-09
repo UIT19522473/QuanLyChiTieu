@@ -18,9 +18,14 @@ import {
 } from '../../redux/slice/dataAllSlice/dataAllSlice';
 
 import ModalDetailItem from './ModalDetailItem';
+import * as getSubTrans from '../../screens/FunctionGlobal/getSubTransfer';
 
-const BtsHomeItem = (props, {navigation}) => {
+const BtsHomeItem = props => {
   const dispatch = useDispatch();
+
+  const allData = useSelector(State => State.dataAll);
+  const timeCurrent = useSelector(State => State.currentTime);
+
   const item = useSelector(state => state.currentItem);
 
   const [isModalVisible, setModalVisible] = useState(false);
@@ -68,6 +73,11 @@ const BtsHomeItem = (props, {navigation}) => {
 
   const subTransfer = useSelector(state => state.subTransferItem.arr);
   // console.log('subTransfer', subTransfer.length);
+  const subArrTrans = getSubTrans.getSubTrans(allData, timeCurrent, props.id);
+  // console.log(
+  //   'Test SubTrans',
+  //   getSubTrans.getSubTrans(allData, timeCurrent, props.id).length,
+  // );
 
   // console.log('new');
   const openBottomSheet = () => {
@@ -75,7 +85,6 @@ const BtsHomeItem = (props, {navigation}) => {
   };
 
   const ItemCurrent = useSelector(State => State.currentItem);
-  const allData = useSelector(State => State.dataAll);
 
   let count = 0;
 
@@ -192,7 +201,11 @@ const BtsHomeItem = (props, {navigation}) => {
           className="flex-1 w-full relative"
           onPress={toggleModalDetail}></TouchableOpacity>
 
-        <ModalDetailItem toggleModalDetail={toggleModalDetail} />
+        <ModalDetailItem
+          toggleModalDetail={toggleModalDetail}
+          item={item}
+          id={props.id}
+        />
       </Modal>
       {/* ------------------------------ */}
 
@@ -210,7 +223,8 @@ const BtsHomeItem = (props, {navigation}) => {
         <View className="py-3">
           <View className="flex flex-row justify-between">
             <Text className="text-base font-bold text-white">
-              {subTransfer.length} giao dịch
+              {/* {subTransfer.length} giao dịch */}
+              {subArrTrans.length} giao dịch
             </Text>
             <View className="flex flex-row gap-2">
               <Text className="text-base text-white font-bold">

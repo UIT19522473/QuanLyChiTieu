@@ -18,8 +18,17 @@ export const HanMucSlice = createSlice({
     }]*/
     timeStart: '',
     timeEnd: '',
+    arrHanMucEdit: [],
   },
   reducers: {
+    clearHanMucEdit: (state, action) => {
+      state.arrHanMucEdit = [];
+    },
+
+    addArrHanMucEdit: (state, action) => {
+      state.arrHanMucEdit.push(action.payload);
+    },
+
     addSwitchAll: (state, action) => {
       state.switchAll = action.payload;
     },

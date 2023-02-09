@@ -47,7 +47,7 @@ const Expense = ({navigation, route}) => {
             item={item}
             title={item.name}
             fillColor={item.color}
-            progress={(item.value / sumExpense).toFixed(4)}
+            progress={(item.value / sumExpense).toFixed(3)}
             money={item.value}
           />
         )}

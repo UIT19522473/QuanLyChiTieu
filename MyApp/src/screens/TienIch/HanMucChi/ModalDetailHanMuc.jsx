@@ -30,14 +30,19 @@ import {
   addHanMuc,
   updateTichHanMuc,
   updateHanMuc,
+  removeHanMucById,
 } from '../../../redux/slice/dataAllSlice/dataAllSlice';
 
 const ItemMenu = props => {
   const dispatch = useDispatch();
   const dataAll = useSelector(State => State.dataAll);
+
   const HanMucAdd = useSelector(State => State.HanMucAdd);
   const chooseCurrent = HanMucAdd.arrChoose.find(
     choose => choose.id == props.item.id,
+  );
+  const itemHaveHanMuc = dataAll.arrItem.find(
+    item => item.id === chooseCurrent.id,
   );
   // HanMucAdd.arrChoose.map(choose => {
   //   console.log(choose.id);
@@ -69,7 +74,10 @@ const ItemMenu = props => {
           <Icon name={props.item.icon} color="white" size={18} />
         </View>
 
-        <Text className="font-bold">{props.item.name}</Text>
+        <Text className="font-bold">
+          {/* {props.item.name} */}
+          {itemHaveHanMuc.name}
+        </Text>
       </View>
 
       <TouchableOpacity
@@ -248,6 +256,18 @@ const ModalDetailHanMuc = ({toggleModal, data}) => {
   };
   // const auth = useSelector(State=>State.auth)
 
+  const removeHM = () => {
+    firestore()
+      .collection('HanMuc')
+      .doc(data.id.toString())
+      .delete()
+      .then(() => {
+        console.log('deleted items!!!');
+        dispatch(removeHanMucById(data.id));
+      });
+    toggleModal();
+  };
+
   const handleDeleteHanMuc = () => {
     Alert.alert('Xóa hạn mức', 'Bạn có chắc muốn xóa hạn mức này ?', [
       {
@@ -257,7 +277,7 @@ const ModalDetailHanMuc = ({toggleModal, data}) => {
       },
       {
         text: 'Đồng ý',
-        // onPress: () => handleRemoveTransfer(),
+        onPress: () => removeHM(),
       },
     ]);
   };

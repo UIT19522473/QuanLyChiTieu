@@ -49,7 +49,7 @@ const TongQuan = () => {
   // const modeTime = useSelector(State => State.currentTime.modeTime);
   const dataAll = useSelector(State => State.dataAll);
 
-  console.log(dataAll.modeTime);
+  // console.log(dataAll.modeTime);
 
   //console.log(data.length);
   return (
@@ -70,9 +70,9 @@ const TongQuan = () => {
       ) : dataAll.modeTime == 2 ? (
         <Month />
       ) : dataAll.modeTime == 3 ? (
-        <Year/>
+        <Year />
       ) : dataAll.modeTime == 4 ? (
-        <AllTime/>
+        <AllTime />
       ) : (
         <></>
       )}

@@ -31,6 +31,8 @@ import {
   clearDataItem,
   clearDataTransfer,
   addHanMuc,
+  clearTodo,
+  addTodo,
 } from '../../redux/slice/dataAllSlice/dataAllSlice';
 
 import auth from '@react-native-firebase/auth';
@@ -138,6 +140,35 @@ const SignIn = ({navigation}) => {
           );
         });
       });
+
+    //get all Todos
+    const timeNow = new Date();
+    const timeCheck =
+      timeNow.getDate() +
+      '/' +
+      (timeNow.getMonth() + 1) +
+      '/' +
+      timeNow.getFullYear();
+    console.log(timeCheck);
+    dispatch(clearTodo());
+    firestore()
+      .collection('Todo')
+      .where('userName', '==', userName)
+      .where('time', '==', timeCheck)
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(documentSnapshot => {
+          dispatch(
+            addTodo({
+              id: documentSnapshot.data().id,
+              note: documentSnapshot.data().note,
+              tick: documentSnapshot.data().tick,
+              time: documentSnapshot.data().time,
+              userName: documentSnapshot.data().userName,
+            }),
+          );
+        });
+      });
   };
 
   const handleSignIn = () => {
@@ -148,8 +179,8 @@ const SignIn = ({navigation}) => {
         console.log('User account created & signed in!');
         dispatch(logAuth(userName.split('@')[0].toUpperCase()));
         loadAllDataByUser(userName.split('@')[0].toUpperCase());
-        signInMain();
         slepp();
+        signInMain();
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {

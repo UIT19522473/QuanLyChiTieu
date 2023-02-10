@@ -8,6 +8,7 @@ export const dataAllSlice = createSlice({
     arrItem: [],
     arrTrans: [],
     arrHanMuc: [],
+    arrTodo: [],
     time: '',
     week: '',
     month: '',
@@ -18,6 +19,35 @@ export const dataAllSlice = createSlice({
     completeTrans: 0,
   },
   reducers: {
+    clearTodo: (state, action) => {
+      state.arrTodo = [];
+    },
+    addTodo: (state, action) => {
+      state.arrTodo.push(action.payload);
+    },
+    deleteTodo: (state, action) => {
+      const index = state.arrTodo.findIndex(item => item.id === action.payload);
+
+      if (index > -1) {
+        // only splice array when item is found
+        state.arrTodo.splice(index, 1); // 2nd parameter means remove one item only
+      }
+    },
+    updateTickTodo: (state, action) => {
+      state.arrTodo.forEach(todo => {
+        if (todo.id === action.payload.id) {
+          todo.tick = action.payload.tick;
+        }
+      });
+    },
+    updateNoteTodo: (state, action) => {
+      state.arrTodo.forEach(todo => {
+        if (todo.id === action.payload.id) {
+          todo.note = action.payload.note;
+        }
+      });
+    },
+
     addHanMuc: (state, action) => {
       state.arrHanMuc.push(action.payload);
     },
@@ -56,7 +86,7 @@ export const dataAllSlice = createSlice({
 
       if (index > -1) {
         // only splice array when item is found
-        state.arrItem.splice(index, 1); // 2nd parameter means remove one item only
+        state.arrHanMuc.splice(index, 1); // 2nd parameter means remove one item only
       }
     },
 
@@ -352,6 +382,11 @@ export const dataAllSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const {
+  updateNoteTodo,
+  updateTickTodo,
+  clearTodo,
+  deleteTodo,
+  addTodo,
   updateHanMuc,
   updateTichHanMuc,
   removeTransfer,

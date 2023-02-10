@@ -14,6 +14,21 @@ const Day = () => {
   let moneyIn = 0;
   let moneyOut = 0;
 
+  const dayNow = new Date();
+  const timeCheck =
+    dayNow.getDate() +
+    '/' +
+    (dayNow.getMonth() + 1) +
+    '/' +
+    dayNow.getFullYear();
+  let count = 0;
+  data.arrTrans.map(item => {
+    if (item.time === timeCheck) {
+      count++;
+    }
+  });
+  console.log('timeCheck', timeCheck);
+
   itemArr.map(item =>
     item.type === 'thu' ? (moneyIn += item.value) : (moneyOut += item.value),
   );
@@ -148,7 +163,8 @@ const Day = () => {
               Tổng số giao dịch :
             </Text>
             <Text className="text-2xl font-bold text-primary">
-              {/* {transferByDay.length} */}2
+              {/* {transferByDay.length} */}
+              {count}
             </Text>
           </View>
           {/* <Text>Mục chi nhiều nhất</Text>

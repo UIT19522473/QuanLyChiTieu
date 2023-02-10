@@ -4,7 +4,12 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {AuthContext} from '../../components/context';
 import {useContext} from 'react';
 
-import {writeFile, readFile, DownloadDirectoryPath} from 'react-native-fs';
+import {
+  writeFile,
+  readFile,
+  DownloadDirectoryPath,
+  ExternalStorageDirectoryPath,
+} from 'react-native-fs';
 import XLSX from 'xlsx';
 
 import Currency from './Currency';
@@ -35,6 +40,8 @@ const TienIch = ({navigation}) => {
     //   .catch(e => {
     //     alert('export that bai', e);
     //   });
+
+    // var file = RNFS.ExternalStorageDirectoryPath + '/test.xlsx';
 
     writeFile(DownloadDirectoryPath + '/sample.csv', wbout, 'ascii')
       .then(r => {

@@ -556,7 +556,7 @@ const HeaderTimeAll = ({navigation}) => {
 
   return (
     <View className="w-full">
-      <View className="flex flex-row justify-between py-2 px-1 bg-primary">
+      <View className="flex flex-row justify-center py-2 px-1 bg-primary">
         {/* <Icon size={24} color={'white'} name="menu" /> */}
         <View></View>
         <View className="flex justify-center items-center gap-1">
@@ -568,10 +568,10 @@ const HeaderTimeAll = ({navigation}) => {
             {InMoney - OutMoney}
           </Text> */}
         </View>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => navigation.navigate('NotifyStack', {name: 'demo'})}>
           <Icon size={24} color={'white'} name="notifications" />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       <View className="items-center flex flex-row justify-between p-3 bg-primary">

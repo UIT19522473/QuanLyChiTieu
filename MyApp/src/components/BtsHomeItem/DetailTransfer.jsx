@@ -126,7 +126,7 @@ const DetailTransfer = ({data, refRBSheet}) => {
 
     // console.log('sss', id + '-' + idItem);
     dispatch(removeTransfer({id: id, idItem: idItem}));
-    refRBSheet.current.close();
+    refRBSheet.current?.close();
   };
 
   const handleDeleteTransfer = () => {
